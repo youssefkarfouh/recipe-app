@@ -8,7 +8,7 @@ function Home() {
   const [categories, setCategories] = useState([]);
   const [recipes, setRecipes] = useState([]);
 
-
+  
   function getReciepesCateg(categorie) {
     axios
       .get(`https://www.themealdb.com/api/json/v1/1/filter.php?c=${categorie}`)
@@ -27,12 +27,12 @@ function Home() {
     function fetchRandomRecipe() {
       axios.get(`https://www.themealdb.com/api/json/v1/1/random.php`).then((res) => {
         setRecipes(res.data.meals);
-        console.log(res);
+
       });
-    }
+    } 
     fetchCategories();
     fetchRandomRecipe();
-  }, []);
+  }, []); 
 
   return (
     <>

@@ -28,13 +28,12 @@ function RecipeDetail() {
     });
 
   const listIngredients = Array.from({ length: 20 }, (v, i) => {
-    // console.log(`${recipeDetail[`strMeasure${i + 1}`]}`);
-
+  
     return (
       <>
-        {recipeDetail[`strMeasure${i + 1}`] && (
+        {recipeDetail[`strIngredient${i + 1}`] && (
           <li key={i}>
-            <IoCheckbox />
+            <IoCheckbox /> 
             {`${recipeDetail[`strMeasure${i + 1}`]} 
             ${recipeDetail[`strIngredient${i + 1}`]}`}
           </li>
