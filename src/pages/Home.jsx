@@ -1,12 +1,16 @@
 import React, { useEffect, useState } from "react";
-import Header from "../components/Header";
-import Categories from "../components/Categories";
-import Recipes from "../components/Recipes";
+import Header from "../components/header/Header";
+import Categories from "../components/categories/Categories";
 import axios from "axios";
+import Aside from "../components/aside/Aside";
+import RecipeCard from "../components/recipeCard/RecipeCard";
 
 function Home() {
   const [categories, setCategories] = useState([]);
   const [recipes, setRecipes] = useState([]);
+  const [isOpened, setIsOpened] = useState(false);
+  const [isRandom, setRandom] = useState(true);
+  const [savedRecipes, setSavedRecipes] = useState([])
 
 
   function getReciepesCateg(categorie) {
@@ -17,6 +21,7 @@ function Home() {
       });
   }
   useEffect(() => {
+
     function fetchCategories() {
       axios
         .get(`https://www.themealdb.com/api/json/v1/1/categories.php`)
@@ -27,31 +32,41 @@ function Home() {
     function fetchRandomRecipe() {
       axios.get(`https://www.themealdb.com/api/json/v1/1/random.php`).then((res) => {
         setRecipes(res.data.meals);
-        console.log(res);
+
       });
+    }
+    function getSavedRecipes() {
+      const data = JSON.parse(localStorage.getItem('recipes'))  
+    
+      if(data) setSavedRecipes(data)
     }
     fetchCategories();
     fetchRandomRecipe();
+    getSavedRecipes();
   }, []);
 
   return (
     <>
-      <Header />
+      <Header   savedRecipes={savedRecipes} setIsOpened={setIsOpened} />
       <main>
-        <aside>
-          <button className="close">
-            <i className="fas fa-close"></i>
-          </button>
-          <h3>Favorite Meals</h3>
-          <ul className="fav-meals"></ul>
-        </aside>
+        <Aside setSavedRecipes={setSavedRecipes} savedRecipes={savedRecipes} setIsOpened={setIsOpened} isOpened={isOpened} />
         <div className="container">
           <Categories
             categories={categories}
             getReciepesCateg={getReciepesCateg}
+            setRandom={setRandom}
+
           />
           <div className="meals-container">
-            <Recipes recipes={recipes} />
+            {recipes.map((recipe) => (
+              <RecipeCard
+                key={recipe.idMeal}
+                isRandom={isRandom}
+                recipe={recipe} 
+                setSavedRecipes={setSavedRecipes}
+                savedRecipes={savedRecipes}
+                />
+            ))}
           </div>
         </div>
       </main>

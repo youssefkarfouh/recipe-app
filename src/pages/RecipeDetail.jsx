@@ -14,9 +14,7 @@ function RecipeDetail() {
     return <span key={index}>{tag}</span>;
   });
 
-  const listInstructions = strInstructions
-    ?.split(".")
-    .map((instruct, index) => {
+  const listInstructions = strInstructions?.split(".").map((instruct, index) => {
       return (
         instruct && (
           <li key={index} className="icon-wrap">
@@ -28,8 +26,6 @@ function RecipeDetail() {
     });
 
   const listIngredients = Array.from({ length: 20 }, (v, i) => {
-    // console.log(`${recipeDetail[`strMeasure${i + 1}`]}`);
-
     return (
       <>
         {recipeDetail[`strMeasure${i + 1}`] && (
@@ -44,14 +40,14 @@ function RecipeDetail() {
   });
 
   useEffect(() => {
-    // console.log("useFFect called");
+    
     axios
       .get(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`)
       .then((res) => {
         setRecipeDetail(res.data.meals[0]);
         setIsLoading(false);
       });
-  }, [id]);
+  }, []);
 
   if (isLoading) {
     return (
