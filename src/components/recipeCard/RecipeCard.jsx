@@ -7,6 +7,7 @@ function RecipeCard({ savedRecipes, setSavedRecipes, isRandom, recipe }) {
 
 
   function isMealExist(savedData, idMeal) {
+    
     for (let i = 0; i < savedData.length; i++) {
       if (savedData[i].idMeal === idMeal) {
         return true;

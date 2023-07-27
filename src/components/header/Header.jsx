@@ -5,6 +5,10 @@ import { IoHeart } from "react-icons/io5";
 import { Link } from "react-router-dom";
 
 function Header({savedRecipes , setIsOpened}) {
+
+  const handleClick = ()=>{
+    setIsOpened(true)
+  }
   return (
     <header>
       <div className="container">
@@ -25,7 +29,7 @@ function Header({savedRecipes , setIsOpened}) {
           <ul className="search-list"></ul>
         </div>
         <div className="favorites-container">
-          <button onClick={()=>setIsOpened(true)}>
+          <button onClick={handleClick}>
             <span className="fav-icon">
               <IoHeart />
             </span>

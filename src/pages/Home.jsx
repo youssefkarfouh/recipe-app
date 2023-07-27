@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Header from "../components/header/Header";
 import Categories from "../components/categories/Categories";
 import axios from "axios";
@@ -12,7 +12,6 @@ function Home() {
   const [isRandom, setRandom] = useState(true);
   const [savedRecipes, setSavedRecipes] = useState([])
 
-
   function getReciepesCateg(categorie) {
     axios
       .get(`https://www.themealdb.com/api/json/v1/1/filter.php?c=${categorie}`)
@@ -20,6 +19,8 @@ function Home() {
         setRecipes(res.data.meals);
       });
   }
+
+
   useEffect(() => {
 
     function fetchCategories() {
@@ -36,18 +37,20 @@ function Home() {
       });
     }
     function getSavedRecipes() {
-      const data = JSON.parse(localStorage.getItem('recipes'))  
-    
-      if(data) setSavedRecipes(data)
+      const data = JSON.parse(localStorage.getItem('recipes'))
+
+      if (data) setSavedRecipes(data)
     }
     fetchCategories();
     fetchRandomRecipe();
     getSavedRecipes();
+    // Clean up the event listener when the component unmounts
+
   }, []);
 
   return (
     <>
-      <Header   savedRecipes={savedRecipes} setIsOpened={setIsOpened} />
+      <Header savedRecipes={savedRecipes} setIsOpened={setIsOpened} />
       <main>
         <Aside setSavedRecipes={setSavedRecipes} savedRecipes={savedRecipes} setIsOpened={setIsOpened} isOpened={isOpened} />
         <div className="container">
@@ -62,10 +65,10 @@ function Home() {
               <RecipeCard
                 key={recipe.idMeal}
                 isRandom={isRandom}
-                recipe={recipe} 
+                recipe={recipe}
                 setSavedRecipes={setSavedRecipes}
                 savedRecipes={savedRecipes}
-                />
+              />
             ))}
           </div>
         </div>
