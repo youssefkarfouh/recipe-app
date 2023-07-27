@@ -34,6 +34,7 @@ function Home() {
       axios.get(`https://www.themealdb.com/api/json/v1/1/random.php`).then((res) => {
         setRecipes(res.data.meals);
 
+
       });
     }
     function getSavedRecipes() {

@@ -1,24 +1,17 @@
 import React from "react";
-import logo from '../../assets/images/logo.png';
-import { IoHeart } from "react-icons/io5";
+import logo from '../assets/images/logo.png';
 
-import { Link } from "react-router-dom";
-
-function Header({savedRecipes , setIsOpened}) {
-
-  const handleClick = ()=>{
-    setIsOpened(true)
-  }
+function Header() {
   return (
     <header>
       <div className="container">
         <div className="logo">
-          <Link to={"/"}>
+          <a href="index.html">
             <img src={logo} alt="logo" />
-          </Link>
+          </a>
         </div>
         <div className="search-container">
-          <form id="form">
+          <form id="form" action="">
             <input
               type="search"
               id="searchInput"
@@ -29,11 +22,11 @@ function Header({savedRecipes , setIsOpened}) {
           <ul className="search-list"></ul>
         </div>
         <div className="favorites-container">
-          <button onClick={handleClick}>
+          <button>
             <span className="fav-icon">
-              <IoHeart />
+              <i className="fa-solid fa-heart"></i>
             </span>
-            <span className="fav-number">{savedRecipes.length}</span>
+            <span className="fav-number">0</span>
           </button>
         </div>
       </div>

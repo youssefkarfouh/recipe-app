@@ -105,6 +105,19 @@ header {
 	.favorites-container {
 		text-align: right;
 
+    .fav-icon {
+      cursor: pointer;
+      background: none;
+      border: 0;
+      width: 40px;
+      height: 40px;
+      font-size: 30px;
+      position: relative;
+      border-radius: 50%;
+      -webkit-border-radius: 50%;
+      -moz-border-radius: 50%;
+      -ms-border-radius: 50%;
+      -o-border-radius: 50%;
 		button {
 			cursor: pointer;
 			background: none;
@@ -118,21 +131,19 @@ header {
 			-ms-border-radius: 50%;
 			-o-border-radius: 50%;
 
-			.fav-icon {
-				font-size: 25px;
-			}
-			.fav-number {
-				position: absolute;
-				font-size: 11px;
-				top: 1px;
-				right: -4px;
-				display: inline-block;
-				background-color: red;
-				color: white;
-				padding: 3px;
-				border-radius: 50%;
-				min-width: 20px;
-				min-height: 20px;
+
+      .fav-number {
+        position: absolute;
+        font-size: 11px;
+        top: 1px;
+        right: -4px;
+        display: inline-block;
+        background-color: red;
+        color: white;
+        padding: 3px;
+        border-radius: 50%;
+        min-width: 20px;
+        min-height: 20px;
 
 				&.show {
 					animation: favNbr 0.1s ease;
