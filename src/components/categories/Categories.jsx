@@ -1,16 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
 
 
 function Categories({ setRandom, categories, getReciepesCateg }) {
 
-  function handClick(categorie) {
-    getReciepesCateg(categorie.strCategory)
+const [selectedCateg , setSelectedCateg] = useState('');
+
+  function handClick(category) {
+
+    console.log(category)
+    getReciepesCateg(category.strCategory)
     setRandom(false)
+    setSelectedCateg(category.strCategory);
   }
 
 
   const listCategories = categories?.map((cat) => (
-    <li key={cat.idCategory} onClick={()=>handClick(cat)}>
+    <li key={cat.idCategory} className={cat.strCategory ===selectedCateg ? "active" : "" } onClick={()=>handClick(cat)}>
       <img src={cat.strCategoryThumb} alt={cat.strCategory} />
       <span>{cat.strCategory}</span>
     </li>

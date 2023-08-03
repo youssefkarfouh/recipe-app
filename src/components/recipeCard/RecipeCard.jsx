@@ -5,7 +5,6 @@ import { IoHeart } from "react-icons/io5";
 
 function RecipeCard({ savedRecipes, setSavedRecipes, isRandom, recipe }) {
 
-
   function isMealExist(savedData, idMeal) {
     
     for (let i = 0; i < savedData.length; i++) {

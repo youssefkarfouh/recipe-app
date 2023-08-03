@@ -50,7 +50,7 @@ header {
 		flex-basis: 300px;
 
 		#searchInput {
-			background-color: #eee;
+			background-color: #eee6;
 			border: 0;
 			padding: 10px;
 			font-size: 14px;
@@ -81,18 +81,28 @@ header {
 			-o-transition: 0.5s all;
 
 			li {
-				color: white;
 				padding: 5px 10px;
 				cursor: pointer;
 				border-bottom: 1px solid rgba(203, 203, 203, 0.151);
-				transition: 0.3s all;
-				-webkit-transition: 0.3s all;
-				-moz-transition: 0.3s all;
-				-ms-transition: 0.3s all;
-				-o-transition: 0.3s all;
 
 				&:hover {
-					color: var(--main-color);
+					a {
+						color: $main-color;
+						
+					}
+				}
+				a {
+					color: white;
+					text-decoration: none;
+					transition: 0.3s all;
+					-webkit-transition: 0.3s all;
+					-moz-transition: 0.3s all;
+					-ms-transition: 0.3s all;
+					-o-transition: 0.3s all;
+					span{
+						color: yellow;
+						font-weight: bold;
+					}
 				}
 			}
 			&.show {
@@ -105,25 +115,11 @@ header {
 	.favorites-container {
 		text-align: right;
 
-    .fav-icon {
-      cursor: pointer;
-      background: none;
-      border: 0;
-      width: 40px;
-      height: 40px;
-      font-size: 30px;
-      position: relative;
-      border-radius: 50%;
-      -webkit-border-radius: 50%;
-      -moz-border-radius: 50%;
-      -ms-border-radius: 50%;
-      -o-border-radius: 50%;
-		button {
+		.fav-icon {
 			cursor: pointer;
 			background: none;
 			border: 0;
-			width: 40px;
-			height: 40px;
+			font-size: 30px;
 			position: relative;
 			border-radius: 50%;
 			-webkit-border-radius: 50%;
@@ -131,19 +127,18 @@ header {
 			-ms-border-radius: 50%;
 			-o-border-radius: 50%;
 
-
-      .fav-number {
-        position: absolute;
-        font-size: 11px;
-        top: 1px;
-        right: -4px;
-        display: inline-block;
-        background-color: red;
-        color: white;
-        padding: 3px;
-        border-radius: 50%;
-        min-width: 20px;
-        min-height: 20px;
+			.fav-number {
+				position: absolute;
+				font-size: 11px;
+				top: 1px;
+				right: -4px;
+				display: inline-block;
+				background-color: red;
+				color: white;
+				padding: 3px;
+				border-radius: 50%;
+				min-width: 20px;
+				min-height: 20px;
 
 				&.show {
 					animation: favNbr 0.1s ease;
@@ -202,7 +197,7 @@ aside {
 		-o-transition: 0.3s;
 
 		&:hover {
-			color: var(--main-color);
+			color: $main-color;
 		}
 	}
 
@@ -239,9 +234,9 @@ aside {
 				display: flex;
 				align-items: center;
 				justify-content: center;
-				svg{
+				svg {
 					fill: rgb(154, 154, 154);
-					&:hover{
+					&:hover {
 						fill: rgb(255, 42, 42);
 					}
 				}
@@ -264,7 +259,7 @@ aside {
 	}
 
 	&::-webkit-scrollbar-thumb {
-		background: var(--main-color);
+		background: $main-color;
 		border-radius: 10px;
 		-webkit-border-radius: 10px;
 		-moz-border-radius: 10px;
@@ -277,7 +272,7 @@ aside {
 	margin: 0 0 50px;
 
 	ul {
-		padding: 0;
+		padding: 20px 0;
 		display: flex;
 		column-gap: 15px;
 		max-width: 700px;
@@ -300,7 +295,7 @@ aside {
 				width: 70px;
 				height: 70px;
 				object-fit: cover;
-				box-shadow: 0 0 10px 2px #3333331a;
+				box-shadow:0 3px 10px 0px rgba(51, 51, 51, 0.1019607843);
 				border: 2px solid white;
 				border-radius: 50%;
 				display: inline-block;
@@ -312,7 +307,8 @@ aside {
 			&:hover,
 			&.active {
 				color: $main-color;
-			}
+
+}
 		}
 		&::-webkit-scrollbar {
 			width: 10px;

@@ -51,7 +51,7 @@ function Home() {
 
   return (
     <>
-      <Header savedRecipes={savedRecipes} setIsOpened={setIsOpened} />
+      <Header setRecipes={setRecipes} savedRecipes={savedRecipes} setIsOpened={setIsOpened} />
       <main>
         <Aside setSavedRecipes={setSavedRecipes} savedRecipes={savedRecipes} setIsOpened={setIsOpened} isOpened={isOpened} />
         <div className="container">

@@ -26,10 +26,7 @@ function RecipeDetail() {
     });
 
   const listIngredients = Array.from({ length: 20 }, (v, i) => {
-<<<<<<< HEAD
-=======
   
->>>>>>> 3cc05092bd246b216b545c9d787295f7470db09a
     return (
       <>
         {recipeDetail[`strIngredient${i + 1}`] && (
