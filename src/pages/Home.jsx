@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
-import Header from "../components/header/Header";
-import Categories from "../components/categories/Categories";
+import Header from "../components/Header";
+import Categories from "../components/Categories";
 import axios from "axios";
-import Aside from "../components/aside/Aside";
-import RecipeCard from "../components/recipeCard/RecipeCard";
+import Aside from "../components/Aside";
+import RecipeList from "../components/RecipeList";
 
 function Home() {
   const [categories, setCategories] = useState([]);
@@ -62,15 +62,12 @@ function Home() {
 
           />
           <div className="meals-container">
-            {recipes.map((recipe) => (
-              <RecipeCard
-                key={recipe.idMeal}
-                isRandom={isRandom}
-                recipe={recipe}
-                setSavedRecipes={setSavedRecipes}
-                savedRecipes={savedRecipes}
-              />
-            ))}
+            <RecipeList
+              isRandom={isRandom}
+              setRecipes={setRecipes}
+              savedRecipes={savedRecipes}
+              setSavedRecipes={setSavedRecipes}
+              recipes={recipes} />
           </div>
         </div>
       </main>

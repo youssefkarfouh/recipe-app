@@ -1,37 +1,36 @@
-import React, { useRef, useState } from "react";
-import logo from '../../assets/images/logo.png';
+import React, { useState } from "react";
+import logo from '../assets/images/logo.png';
 import { IoHeart } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import useClickOutside from "../../shared/hooks/useClickOutside";
+import useClickOutside from "../shared/hooks/useClickOutside";
 
-
-function Header({ savedRecipes, setIsOpened }) {
+function Header({ setRecipes, savedRecipes, setIsOpened }) {
 
   const [formData, setFormData] = useState({ search: '' })
   const [searchList, setSearchList] = useState([])
-  const [show, setShow] = useState([])
+  const [show, setShow] = useState(false)
 
   const ref = useClickOutside(() => {
     setShow(false)
   });
 
-  console.log("ref in header" , ref);
+  let mappedData = searchList && formData.search !== "" ?
+    [<li className="text-center" key={0}>
+      <button className="btn btn-warning" onClick={handlSearch}>You want to search for : {formData.search}</button></li>]
+    : [<li><a>Ooops !! Nothing Found</a></li>]
 
-  const mappedData = searchList?.map(ele => {
+  mappedData = [searchList?.map((ele, index) => {
     return (
       <>
-        <li>
+        <li key={index + 1} >
           <Link to={`/recipe/${ele.idMeal}`} dangerouslySetInnerHTML={highlite(ele.strMeal, formData.search)}></Link>
         </li>
       </>
     )
-  })
+  }), ...mappedData]
 
-function handlSubmit(e){
-  e.preventDefault();
-  console.log("submitted")
-}
+
   function highlite(sourceText, strHighlite) {
 
     let regex = new RegExp(strHighlite, "ig");
@@ -42,7 +41,6 @@ function handlSubmit(e){
     };
 
   }
-
   function handlChange(e) {
 
     const value = e.target.value;
@@ -58,6 +56,14 @@ function handlSubmit(e){
       });
 
   }
+  function handlSearch(e) {
+    if (e) {
+      e.preventDefault()
+    }
+    setRecipes(searchList)
+    setShow(false)
+  }
+
   return (
     <header>
       <div className="container">
@@ -67,7 +73,7 @@ function handlSubmit(e){
           </Link>
         </div>
         <div className="search-container">
-          <form id="form" onSubmit={handlSubmit}>
+          <form id="form" onSubmit={handlSearch}>
             <input
               type="search"
               id="searchInput"
@@ -78,7 +84,7 @@ function handlSubmit(e){
             />
           </form>
           <ul ref={ref} className={`search-list ${show ? 'show' : ""}`}>
-            {mappedData ? mappedData : <li><a>Ooops !! Nothing Found</a></li>}
+            {mappedData}
           </ul>
         </div>
         <div className="favorites-container">

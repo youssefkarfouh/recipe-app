@@ -3,7 +3,7 @@ import React, { useRef } from 'react'
 import { IoClose } from "react-icons/io5";
 import { Link } from 'react-router-dom';
 import { IoRemoveCircleSharp } from "react-icons/io5";
-import useClickOutside from '../../shared/hooks/useClickOutside';
+import useClickOutside from '../shared/hooks/useClickOutside';
 
 
 const Aside = ({ setSavedRecipes, savedRecipes, setIsOpened, isOpened }) => {

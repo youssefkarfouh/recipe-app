@@ -41,7 +41,6 @@ function RecipeDetail() {
   });
 
   useEffect(() => {
-    
     axios
       .get(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`)
       .then((res) => {
