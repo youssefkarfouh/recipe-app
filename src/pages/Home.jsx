@@ -4,13 +4,23 @@ import Categories from "../components/Categories";
 import axios from "axios";
 import Aside from "../components/Aside";
 import RecipeList from "../components/RecipeList";
+import Pagination from "../components/Pagination";
 
 function Home() {
   const [categories, setCategories] = useState([]);
   const [recipes, setRecipes] = useState([]);
   const [isOpened, setIsOpened] = useState(false);
   const [isRandom, setRandom] = useState(true);
-  const [savedRecipes, setSavedRecipes] = useState([])
+  const [savedRecipes, setSavedRecipes] = useState([]);
+
+  const [recipesPerPage, setRecipesPerPage] = useState(10);
+  const [currentPage, setCurrentPage] = useState(1);
+
+
+  const lastRecipeIndex = currentPage * recipesPerPage;
+  const firstRecipeIndex = lastRecipeIndex - recipesPerPage;
+  const currentRecipes = recipes.slice(firstRecipeIndex, lastRecipeIndex)
+
 
   function getReciepesCateg(categorie) {
     axios
@@ -18,6 +28,10 @@ function Home() {
       .then((res) => {
         setRecipes(res.data.meals);
       });
+  }
+
+  function paginate(nbr) {
+    setCurrentPage(nbr)
   }
 
 
@@ -51,7 +65,7 @@ function Home() {
 
   return (
     <>
-      <Header setRecipes={setRecipes} savedRecipes={savedRecipes} setIsOpened={setIsOpened} />
+      <Header setRandom={setRandom} setRecipes={setRecipes} savedRecipes={savedRecipes} setIsOpened={setIsOpened} />
       <main>
         <Aside setSavedRecipes={setSavedRecipes} savedRecipes={savedRecipes} setIsOpened={setIsOpened} isOpened={isOpened} />
         <div className="container">
@@ -67,8 +81,10 @@ function Home() {
               setRecipes={setRecipes}
               savedRecipes={savedRecipes}
               setSavedRecipes={setSavedRecipes}
-              recipes={recipes} />
+              recipes={currentRecipes} />
           </div>
+
+          <Pagination  currentPage={currentPage} recipesPerPage={recipesPerPage} totalRecipes={recipes.length} paginate={paginate} />
         </div>
       </main>
     </>

@@ -1,4 +1,5 @@
 $main-color: #e9665c;
+$light-main-color: #e9655c5d;
 
 *,
 ::before,
@@ -88,7 +89,6 @@ header {
 				&:hover {
 					a {
 						color: $main-color;
-						
 					}
 				}
 				a {
@@ -99,7 +99,7 @@ header {
 					-moz-transition: 0.3s all;
 					-ms-transition: 0.3s all;
 					-o-transition: 0.3s all;
-					span{
+					span {
 						color: yellow;
 						font-weight: bold;
 					}
@@ -190,6 +190,11 @@ aside {
 		font-size: 20px;
 		background: 0;
 		border: 0;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		width: 20px;
+		height: 20px;
 		transition: 0.3s;
 		-webkit-transition: 0.3s;
 		-moz-transition: 0.3s;
@@ -295,7 +300,7 @@ aside {
 				width: 70px;
 				height: 70px;
 				object-fit: cover;
-				box-shadow:0 3px 10px 0px rgba(51, 51, 51, 0.1019607843);
+				box-shadow: 0 3px 10px 0px rgba(51, 51, 51, 0.1019607843);
 				border: 2px solid white;
 				border-radius: 50%;
 				display: inline-block;
@@ -307,8 +312,7 @@ aside {
 			&:hover,
 			&.active {
 				color: $main-color;
-
-}
+			}
 		}
 		&::-webkit-scrollbar {
 			width: 10px;
@@ -385,6 +389,9 @@ aside {
 			-ms-transition: 0.3s all;
 			-o-transition: 0.3s all;
 			color: #ddd;
+			display: flex;
+			align-items: center;
+			justify-content: center;
 			&.active {
 				svg {
 					fill: $main-color;
@@ -399,6 +406,37 @@ aside {
 	grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
 	gap: 20px;
 }
+
+// paggination
+
+.pagination {
+	justify-content: center;
+	gap: 1.5rem;
+	.page-item {
+		&.active {
+			.page-link {
+				background-color: $main-color;
+				border-color: $main-color;
+				color: white;
+			}
+		}
+
+		.page-link {
+			color: $main-color;
+
+			&:hover {
+				z-index: 2;
+				color: $main-color;
+				background-color: $light-main-color;
+				border-color: $light-main-color;
+			}
+			&:focus{
+				box-shadow: none;
+			}
+		}
+	}
+}
+
 
 /* single meal css  */
 

@@ -37,7 +37,7 @@ const Aside = ({ setSavedRecipes, savedRecipes, setIsOpened, isOpened }) => {
             <button className="close" onClick={() => setIsOpened(false)}>
                 <IoClose />
             </button>
-            <h3>Favorite Meals</h3>
+            <h5>Favorite Meals</h5>
             <ul className="fav-meals">
                 {savedData}
             </ul>

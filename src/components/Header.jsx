@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import useClickOutside from "../shared/hooks/useClickOutside";
 
-function Header({ setRecipes, savedRecipes, setIsOpened }) {
+function Header({setRandom, setRecipes, savedRecipes, setIsOpened }) {
 
   const [formData, setFormData] = useState({ search: '' })
   const [searchList, setSearchList] = useState([])
@@ -58,7 +58,8 @@ function Header({ setRecipes, savedRecipes, setIsOpened }) {
   }
   function handlSearch(e) {
     if (e) {
-      e.preventDefault()
+      e.preventDefault();
+      setRandom(false)
     }
     setRecipes(searchList)
     setShow(false)
