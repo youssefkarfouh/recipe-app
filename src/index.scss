@@ -27,7 +27,7 @@ ul {
 .container {
 	max-width: 1200px;
 	margin: 0 auto;
-	padding: 30px 15px;
+	padding: 0 30px;
 }
 
 header {
@@ -495,6 +495,11 @@ aside {
 	justify-content: center;
 	align-items: center;
 }
+
+
+// register 
+
+
 
 // .meal-infos
 @media screen and (max-width: 767px) {

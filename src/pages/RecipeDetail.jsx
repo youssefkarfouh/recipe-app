@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import { IoCheckbox } from "react-icons/io5";
-import { Spin } from "antd";
 
 function RecipeDetail() {
   const { id } = useParams();
@@ -52,7 +51,7 @@ function RecipeDetail() {
   if (isLoading) {
     return (
       <div className="loading">
-        <Spin size="large" />
+        Loading ...
       </div>
     );
   }

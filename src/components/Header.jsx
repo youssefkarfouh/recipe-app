@@ -3,7 +3,7 @@ import logo from '../assets/images/logo.png';
 import { IoHeart } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import useClickOutside from "../shared/hooks/useClickOutside";
+import useClickOutside from "../hooks/useClickOutside";
 
 function Header({setRandom, setRecipes, savedRecipes, setIsOpened }) {
 
@@ -18,7 +18,7 @@ function Header({setRandom, setRecipes, savedRecipes, setIsOpened }) {
   let mappedData = searchList && formData.search !== "" ?
     [<li className="text-center" key={0}>
       <button className="btn btn-warning" onClick={handlSearch}>You want to search for : {formData.search}</button></li>]
-    : [<li><a>Ooops !! Nothing Found</a></li>]
+    : [<li ><a>Ooops !! Nothing Found</a></li>]
 
   mappedData = [searchList?.map((ele, index) => {
     return (
