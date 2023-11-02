@@ -37,7 +37,7 @@ function RecipeCard({ savedRecipes, setSavedRecipes, isRandom, recipe }) {
     <div className="meal">
       <div className="meal-header">
         {isRandom && <span className="random">Random recipe</span>}
-        <Link to={`/recipe/${recipe.idMeal}`} target="_blank">
+        <Link to={`/recipe/${recipe.idMeal}`}  >
           <img
             src={recipe.strMealThumb}
             alt="Chick-Fil-A Sandwich"

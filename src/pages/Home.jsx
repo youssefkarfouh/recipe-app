@@ -8,11 +8,6 @@ import Pagination from "../components/Pagination";
 
 function Home() {
   const [categories, setCategories] = useState([]);
-  const [recipes, setRecipes] = useState([]);
-  const [isOpened, setIsOpened] = useState(false);
-  const [isRandom, setRandom] = useState(true);
-  const [savedRecipes, setSavedRecipes] = useState([]);
-
   const [recipesPerPage, setRecipesPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -22,6 +17,13 @@ function Home() {
   const currentRecipes = recipes.slice(firstRecipeIndex, lastRecipeIndex)
 
 
+
+  function paginate(nbr) {
+    setCurrentPage(nbr)
+  }
+
+
+
   function getReciepesCateg(categorie) {
     axios
       .get(`https://www.themealdb.com/api/json/v1/1/filter.php?c=${categorie}`)
@@ -29,11 +31,6 @@ function Home() {
         setRecipes(res.data.meals);
       });
   }
-
-  function paginate(nbr) {
-    setCurrentPage(nbr)
-  }
-
 
   useEffect(() => {
 
@@ -51,42 +48,36 @@ function Home() {
 
       });
     }
-    function getSavedRecipes() {
-      const data = JSON.parse(localStorage.getItem('recipes'))
-
-      if (data) setSavedRecipes(data)
-    }
+   
     fetchCategories();
     fetchRandomRecipe();
-    getSavedRecipes();
-    // Clean up the event listener when the component unmounts
+   
 
   }, []);
 
   return (
     <>
-      <Header setRandom={setRandom} setRecipes={setRecipes} savedRecipes={savedRecipes} setIsOpened={setIsOpened} />
-      <main>
-        <Aside setSavedRecipes={setSavedRecipes} savedRecipes={savedRecipes} setIsOpened={setIsOpened} isOpened={isOpened} />
-        <div className="container">
-          <Categories
-            categories={categories}
-            getReciepesCateg={getReciepesCateg}
-            setRandom={setRandom}
 
+      <div className="container">
+        <Categories
+          categories={categories}
+          getReciepesCateg={getReciepesCateg}
+        // setRandom={setRandom}
+
+        />
+        <div className="meals-container">
+          <RecipeList
+          // setRecipes={setRecipes}
+          // savedRecipes={savedRecipes}
+          // setSavedRecipes={setSavedRecipes}
+           recipes={currentRecipes} 
           />
-          <div className="meals-container">
-            <RecipeList
-              isRandom={isRandom}
-              setRecipes={setRecipes}
-              savedRecipes={savedRecipes}
-              setSavedRecipes={setSavedRecipes}
-              recipes={currentRecipes} />
-          </div>
-
-          <Pagination  currentPage={currentPage} recipesPerPage={recipesPerPage} totalRecipes={recipes.length} paginate={paginate} />
         </div>
-      </main>
+
+        <Pagination currentPage={currentPage} recipesPerPage={recipesPerPage} totalRecipes={recipes.length} paginate={paginate} />
+      </div>
+
+
     </>
   );
 }

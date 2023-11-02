@@ -1,10 +1,15 @@
 import React from 'react'
 import RecipeCard from './RecipeCard'
+import { useOutletContext } from 'react-router-dom';
 
-function RecipeList({savedRecipes, setSavedRecipes , isRandom , recipes}) {
+function RecipeList({ savedRecipes, setSavedRecipes }) {
+    const { isOpened, setIsOpened, recipes, setRecipes, isRandom, setRandom } = useOutletContext(); 
+
+
+    console.log("tttt", isOpened);
     return (
 
-        recipes.map((recipe) => (
+        recipes?.map((recipe) => (
             <RecipeCard
                 key={recipe.idMeal}
                 isRandom={isRandom}

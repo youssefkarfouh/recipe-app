@@ -1,17 +1,21 @@
-import { useState, useEffect, useContext } from 'react'
-import AuthContext from '../context/AuthProvider';
+import { useState, useEffect } from 'react'
 import axios from '../api/axios';
+import useAuth from '../hooks/useAuth';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 function SignIn() {
-
 
   const [err, setErrMsg] = useState('');
   const [user, setUser] = useState('');
   const [pwd, setPwd] = useState('');
 
-  const [success, setSuccess] = useState(false)
+  const { setAuth } = useAuth();
 
-  const { setAuth } = useContext(AuthContext)
+  const navigate = useNavigate();
+  const location = useLocation()
+  const from = location.state ? location.state.from.pathname : "/"
+
+  console.log("location in sign in component", location)
 
 
   useEffect(() => {
@@ -23,22 +27,21 @@ function SignIn() {
     e.preventDefault();
 
     try {
-      const response = await axios.post('/auth',
-        JSON.stringify({ user, pwd }),
+      const response = await axios.post('/auth', JSON.stringify({ user, pwd }),
         {
           headers: { 'Content-Type': 'application/json' },
           withCredentials: true
         }
       );
 
-      console.log("response", response)
       const accessToken = response?.data?.accessToken;
       const roles = response?.data?.roles;
       setAuth({ user, pwd, roles, accessToken });
       setUser('');
       setPwd('');
-      setSuccess(true);
 
+      console.log("from in sigin ", from)
+      navigate(from, { replace: true })
 
 
     } catch (err) {
@@ -67,11 +70,10 @@ function SignIn() {
 
             {err !== '' &&
               <div class="alert alert-danger" role="alert">
-                {err}              
-            </div>}
+                {err}
+              </div>}
 
             <form onSubmit={handleSubmit}>
-
               <div className="mb-3">
                 <label htmlFor="username" className="form-label">Username</label>
                 <input
@@ -89,15 +91,15 @@ function SignIn() {
                   type="password" className="form-control" id="password" placeholder="password" />
               </div>
               <button
-                className="btn btn-primary">Login </button>
+                className="btn btn-primary">Login
+              </button>
             </form>
 
+            <p className='mt-3'>You don`t have an account <Link to={"/register"}>Register</Link></p>
+
           </div>
-
         </div>
-
       </div>
-
     </section>
   )
 }

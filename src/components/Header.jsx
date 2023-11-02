@@ -4,12 +4,16 @@ import { IoHeart } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import useClickOutside from "../hooks/useClickOutside";
+import useAuth from "../hooks/useAuth";
 
 function Header({setRandom, setRecipes, savedRecipes, setIsOpened }) {
 
   const [formData, setFormData] = useState({ search: '' })
   const [searchList, setSearchList] = useState([])
-  const [show, setShow] = useState(false)
+  const [show, setShow] = useState(false);
+
+
+  const {auth} = useAuth();
 
   const ref = useClickOutside(() => {
     setShow(false)
@@ -18,7 +22,7 @@ function Header({setRandom, setRecipes, savedRecipes, setIsOpened }) {
   let mappedData = searchList && formData.search !== "" ?
     [<li className="text-center" key={0}>
       <button className="btn btn-warning" onClick={handlSearch}>You want to search for : {formData.search}</button></li>]
-    : [<li ><a>Ooops !! Nothing Found</a></li>]
+    : [<li key={12121}><a>Ooops !! Nothing Found</a></li>]
 
   mappedData = [searchList?.map((ele, index) => {
     return (
@@ -97,6 +101,9 @@ function Header({setRandom, setRecipes, savedRecipes, setIsOpened }) {
               {savedRecipes.length}
             </span>
           </button>
+        </div>
+        <div className="logged-user">
+          <span>Hello {auth.user} </span>
         </div>
       </div>
     </header>
