@@ -5,11 +5,14 @@ import axios from "axios";
 import Aside from "../components/Aside";
 import RecipeList from "../components/RecipeList";
 import Pagination from "../components/Pagination";
+import { useOutletContext } from "react-router-dom";
 
 function Home() {
   const [categories, setCategories] = useState([]);
   const [recipesPerPage, setRecipesPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
+  const { isOpened, setIsOpened, savedRecipes, setSavedRecipes, recipes, setRecipes, isRandom, setRandom } = useOutletContext();
+
 
 
   const lastRecipeIndex = currentPage * recipesPerPage;
@@ -22,12 +25,11 @@ function Home() {
     setCurrentPage(nbr)
   }
 
-
-
   function getReciepesCateg(categorie) {
     axios
       .get(`https://www.themealdb.com/api/json/v1/1/filter.php?c=${categorie}`)
       .then((res) => {
+
         setRecipes(res.data.meals);
       });
   }
@@ -48,10 +50,10 @@ function Home() {
 
       });
     }
-   
+
     fetchCategories();
     fetchRandomRecipe();
-   
+
 
   }, []);
 
@@ -62,15 +64,14 @@ function Home() {
         <Categories
           categories={categories}
           getReciepesCateg={getReciepesCateg}
-        // setRandom={setRandom}
 
         />
         <div className="meals-container">
           <RecipeList
-          // setRecipes={setRecipes}
-          // savedRecipes={savedRecipes}
-          // setSavedRecipes={setSavedRecipes}
-           recipes={currentRecipes} 
+            // setRecipes={setRecipes}
+            savedRecipes={savedRecipes}
+            setSavedRecipes={setSavedRecipes}
+            recipes={currentRecipes}
           />
         </div>
 

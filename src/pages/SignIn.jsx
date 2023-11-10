@@ -69,9 +69,8 @@ function SignIn() {
             <h3 className="text-center my-5">Sign in</h3>
 
             {err !== '' &&
-              <div class="alert alert-danger" role="alert">
-                {err}
-              </div>}
+              <div class="alert alert-danger" role="alert">{err}</div>
+            }
 
             <form onSubmit={handleSubmit}>
               <div className="mb-3">

@@ -8,8 +8,6 @@ function RequireAuth({ allowedRoles }) {
 
     console.log("location in required auth component", location)
 
-    console.log("roles" , auth.roles)
-
     return (
 
         auth.roles?.find(role => allowedRoles.includes(role))

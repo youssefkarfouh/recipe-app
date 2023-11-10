@@ -23,9 +23,6 @@ function RootLayout() {
   }, [])
 
 
-
-
-
   return (
 
     <div className='App'>
