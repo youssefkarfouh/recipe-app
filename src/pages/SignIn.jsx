@@ -15,8 +15,6 @@ function SignIn() {
   const location = useLocation()
   const from = location.state ? location.state.from.pathname : "/"
 
-  console.log("location in sign in component", location)
-
 
   useEffect(() => {
     setErrMsg('')

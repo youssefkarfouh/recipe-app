@@ -2,40 +2,56 @@ import React, { useEffect, useState } from 'react'
 import { Outlet } from 'react-router-dom'
 import Header from './Header';
 import Aside from './Aside';
+import { useAppContext } from '../context/SharedData';
+import Categories from './Categories';
+import axios from 'axios';
 
 function RootLayout() {
 
-  const [isOpened, setIsOpened] = useState(false);
-  const [recipes, setRecipes] = useState([]);
-  const [isRandom, setRandom] = useState(true);
-  const [savedRecipes, setSavedRecipes] = useState([]);
-
+  const { setSavedRecipes, setRecipes } = useAppContext();
+  const [categories, setCategories] = useState([]);
 
   useEffect(() => {
-
-    function getSavedRecipes() {
-      const data = JSON.parse(localStorage.getItem('recipes'))
-
-      if (data) setSavedRecipes(data)
-    }
-
+    fetchCategories();
     getSavedRecipes();
   }, [])
 
+  function getSavedRecipes() {
+    const data = JSON.parse(localStorage.getItem('recipes'))
+
+    if (data) setSavedRecipes(data)
+  }
+
+  function fetchCategories() {
+    axios
+      .get(`https://www.themealdb.com/api/json/v1/1/categories.php`)
+      .then((res) => {
+        setCategories(res.data.categories);
+      });
+  }
+
+  function getReciepesCateg(categorie) {
+    axios
+      .get(`https://www.themealdb.com/api/json/v1/1/filter.php?c=${categorie}`)
+      .then((res) => {
+        setRecipes(res.data.meals);
+      });
+  }
 
   return (
-
     <div className='App'>
-      <Header setRandom={setRandom} setRecipes={setRecipes}
-        savedRecipes={savedRecipes} setIsOpened={setIsOpened} />
+      <Header />
       <main>
-        <Aside setSavedRecipes={setSavedRecipes} savedRecipes={savedRecipes} setIsOpened={setIsOpened} isOpened={isOpened} />
-
-        <Outlet context={{ savedRecipes, setSavedRecipes, isOpened, setIsOpened, recipes, setRecipes, isRandom, setRandom }} />
+        <Aside />
+        <div className="container">
+          <Categories
+            categories={categories}
+            getReciepesCateg={getReciepesCateg}
+          />
+          <Outlet />
+        </div>
       </main>
     </div>
-
-
   )
 }
 

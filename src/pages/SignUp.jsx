@@ -5,15 +5,12 @@ import { useLocation, useNavigate } from 'react-router-dom';
 
 const SignUp = () => {
 
-    const navigate = useNavigate();
-
     const [err, setErrMsg] = useState('');
     const [user, setUser] = useState('');
     const [pwd, setPwd] = useState('');
     const [confirmPwd, setConfirmPwd] = useState('');
     const [matchPwd, setMatchPwd] = useState(false);
 
-    const location = useLocation()
 
 
     useEffect(() => {
@@ -44,9 +41,8 @@ const SignUp = () => {
             setUser('');
             setPwd('');
             setConfirmPwd('');
-            console.log("response", response)
 
-            navigate("/login", { replace: true, state: location });
+            alert("success")
 
 
 

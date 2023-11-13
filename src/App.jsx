@@ -35,6 +35,7 @@ function App() {
           <Route path="/" element={<RootLayout />}>
             <Route index element={<Home />}></Route>
             <Route path="recipe/:id" element={<RecipeDetail />} />
+            <Route path="category/:name" element={<Category />} />
           </Route>
 
         </Route>

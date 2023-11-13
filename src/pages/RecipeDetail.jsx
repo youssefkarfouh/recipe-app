@@ -5,6 +5,8 @@ import { IoCheckbox } from "react-icons/io5";
 
 function RecipeDetail() {
   const { id } = useParams();
+
+  console.log("id" , id)
   const [recipeDetail, setRecipeDetail] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const { strTags, strInstructions } = recipeDetail;

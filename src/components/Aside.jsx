@@ -4,9 +4,13 @@ import { IoClose } from "react-icons/io5";
 import { Link } from 'react-router-dom';
 import { IoRemoveCircleSharp } from "react-icons/io5";
 import useClickOutside from '../hooks/useClickOutside';
+import { useAppContext } from '../context/SharedData';
 
 
-const Aside = ({ setSavedRecipes, savedRecipes, setIsOpened, isOpened }) => {
+const Aside = () => {
+
+    const {savedRecipes ,setSavedRecipes, isOpened , setIsOpened} = useAppContext()
+
 
     const ref = useClickOutside(()=>{
         setIsOpened(false)

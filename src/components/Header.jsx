@@ -5,15 +5,20 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import useClickOutside from "../hooks/useClickOutside";
 import useAuth from "../hooks/useAuth";
+import { useAppContext } from "../context/SharedData";
 
-function Header({setRandom, setRecipes, savedRecipes, setIsOpened }) {
+
+function Header() {
+
+
+  const { setRecipes, setRandom, savedRecipes, setIsOpened } = useAppContext()
+  const { auth } = useAuth();
+
 
   const [formData, setFormData] = useState({ search: '' })
   const [searchList, setSearchList] = useState([])
   const [show, setShow] = useState(false);
 
-
-  const {auth} = useAuth();
 
   const ref = useClickOutside(() => {
     setShow(false)
@@ -35,13 +40,14 @@ function Header({setRandom, setRecipes, savedRecipes, setIsOpened }) {
   }), ...mappedData]
 
 
+  // highlite text in the search list 
   function highlite(sourceText, strHighlite) {
 
     let regex = new RegExp(strHighlite, "ig");
     let res = sourceText.replace(regex, `<span>${strHighlite}</span>`);
 
     return {
-      __html: res // Wrap the result in an object with "__html" key
+      __html: res
     };
 
   }
