@@ -1,15 +1,38 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "../api/axios";
+import { useAppContext } from "../context/SharedData";
 
 
-function Categories({ categories, getReciepesCateg }) {
+function Categories() {
 
   const [selectedCateg, setSelectedCateg] = useState('');
+  const [categories, setCategories] = useState([]);
+
+  const navigate = useNavigate();
+
+
+  useEffect(() => {
+    fetchCategories();
+  
+  }, [])
+
 
   function handClick(category) {
-    getReciepesCateg(category.strCategory)
+    
+    navigate(`/category/${category.strCategory}`)
 
     setSelectedCateg(category.strCategory);
   }
+
+  function fetchCategories() {
+    axios
+      .get(`https://www.themealdb.com/api/json/v1/1/categories.php`)
+      .then((res) => {
+        setCategories(res.data.categories);
+      });
+  }
+
 
 
   const listCategories = categories?.map((cat) => (

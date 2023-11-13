@@ -48,7 +48,7 @@ function RecipeDetail() {
         setRecipeDetail(res.data.meals[0]);
         setIsLoading(false);
       });
-  }, []);
+  }, [id]);
 
   if (isLoading) {
     return (

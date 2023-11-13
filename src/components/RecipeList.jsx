@@ -1,7 +1,7 @@
 import React from 'react'
 import RecipeCard from './RecipeCard'
 
-function RecipeList({ recipes }) {
+function RecipeList({ isRandom,recipes }) {
 
     
     return (
@@ -10,6 +10,7 @@ function RecipeList({ recipes }) {
             <RecipeCard
                 key={recipe.idMeal}
                 recipe={recipe}
+                isRandom={isRandom}
             />
         ))
     )

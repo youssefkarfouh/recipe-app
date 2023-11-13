@@ -1,14 +1,12 @@
 import React from "react";
-import {useNavigate } from "react-router-dom";
+import {Link, useNavigate } from "react-router-dom";
 import { IoHeart } from "react-icons/io5";
 import { useAppContext } from "../context/SharedData";
 
 
-function RecipeCard({ recipe }) {
+function RecipeCard({isRandom, recipe }) {
 
-  const navigate = useNavigate();
-  const { isRandom , setSavedRecipes, savedRecipes } = useAppContext()
-
+  const { setSavedRecipes, savedRecipes } = useAppContext()
 
   function isMealExist(savedData, idMeal) {
 
@@ -38,25 +36,20 @@ function RecipeCard({ recipe }) {
 
   }
 
-  function navigateToDetail(idMeal){
 
-    console.log("idmeal" , idMeal)
-
-    navigate(`/recipe/${idMeal}`);
-  }
   
 
   return (
-    <div className="meal" onClick={(e) => navigateToDetail(recipe.idMeal)}>
-      <div className="meal-header">
+    <div className="meal" >
+      <div className="meal-header" >
         {isRandom && <span className="random">Random recipe</span>}
-        {/* <Link to={`/recipe/${recipe.idMeal}`}  > */}
+        <Link to={`/recipe/${recipe.idMeal}`}  >
         <img
           src={recipe.strMealThumb}
           alt={`${recipe.strMeal}`}
           title={`${recipe.strMeal}`}
         />
-        {/* </Link> */}
+        </Link>
       </div>
       <div className="meal-body">
         <h5>{recipe.strMeal}</h5>

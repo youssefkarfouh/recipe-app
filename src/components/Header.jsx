@@ -78,27 +78,27 @@ function Header() {
   return (
     <header>
       <div className="container">
-        <div className="logo">
-          <Link to="/">
-            <img src={logo} alt="logo" />
-          </Link>
-        </div>
-        <div className="search-container">
-          <form id="form" onSubmit={handlSearch}>
-            <input
-              type="search"
-              id="searchInput"
-              name="search"
-              placeholder="search..."
-              onChange={handlChange}
-              value={formData.search}
-            />
-          </form>
-          <ul ref={ref} className={`search-list ${show ? 'show' : ""}`}>
-            {mappedData}
-          </ul>
-        </div>
-        <div className="favorites-container">
+        <div className="d-flex align-items-center justify-content-between py-3">
+          <div className="logo">
+            <Link to="/">
+              <img src={logo} alt="logo" />
+            </Link>
+          </div>
+          <div className="search-container">
+            <form id="form" onSubmit={handlSearch}>
+              <input
+                type="search"
+                id="searchInput"
+                name="search"
+                placeholder="search..."
+                onChange={handlChange}
+                value={formData.search}
+              />
+            </form>
+            <ul ref={ref} className={`search-list ${show ? 'show' : ""}`}>
+              {mappedData}
+            </ul>
+          </div>
           <button className="fav-icon" onClick={() => setIsOpened(true)}>
             <IoHeart />
             <span
@@ -107,9 +107,9 @@ function Header() {
               {savedRecipes.length}
             </span>
           </button>
-        </div>
-        <div className="logged-user">
-          <span>Hello {auth.user} </span>
+          <div className="logged-user">
+            <span>Hello {auth.user} </span>
+          </div>
         </div>
       </div>
     </header>

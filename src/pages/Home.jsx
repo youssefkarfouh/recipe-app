@@ -9,17 +9,6 @@ function Home() {
 
   const { setRecipes, recipes } = useAppContext()
 
-  const [recipesPerPage, setRecipesPerPage] = useState(10);
-  const [currentPage, setCurrentPage] = useState(1);
-
-
-  const lastRecipeIndex = currentPage * recipesPerPage;
-  const firstRecipeIndex = lastRecipeIndex - recipesPerPage;
-  const currentRecipes = recipes.slice(firstRecipeIndex, lastRecipeIndex)
-
-  function paginate(nbr) {
-    setCurrentPage(nbr)
-  }
 
   useEffect(() => {
     fetchRandomRecipe()
@@ -33,14 +22,12 @@ function Home() {
 
   return (
     <>
-
       <div className="meals-container">
         <RecipeList
-          recipes={currentRecipes}
+          isRandom={true}
+          recipes={recipes}
         />
       </div>
-
-      <Pagination currentPage={currentPage} recipesPerPage={recipesPerPage} totalRecipes={recipes.length} paginate={paginate} />
     </>
   );
 }

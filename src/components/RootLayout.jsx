@@ -9,10 +9,9 @@ import axios from 'axios';
 function RootLayout() {
 
   const { setSavedRecipes, setRecipes } = useAppContext();
-  const [categories, setCategories] = useState([]);
 
   useEffect(() => {
-    fetchCategories();
+    // fetchCategories();
     getSavedRecipes();
   }, [])
 
@@ -22,21 +21,6 @@ function RootLayout() {
     if (data) setSavedRecipes(data)
   }
 
-  function fetchCategories() {
-    axios
-      .get(`https://www.themealdb.com/api/json/v1/1/categories.php`)
-      .then((res) => {
-        setCategories(res.data.categories);
-      });
-  }
-
-  function getReciepesCateg(categorie) {
-    axios
-      .get(`https://www.themealdb.com/api/json/v1/1/filter.php?c=${categorie}`)
-      .then((res) => {
-        setRecipes(res.data.meals);
-      });
-  }
 
   return (
     <div className='App'>
@@ -44,10 +28,7 @@ function RootLayout() {
       <main>
         <Aside />
         <div className="container">
-          <Categories
-            categories={categories}
-            getReciepesCateg={getReciepesCateg}
-          />
+          <Categories/>
           <Outlet />
         </div>
       </main>

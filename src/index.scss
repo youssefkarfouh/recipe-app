@@ -24,27 +24,30 @@ ul {
 	padding-left: 10px;
 }
 
-.container {
-	max-width: 1200px;
-	margin: 0 auto;
-	padding: 0 30px;
-}
+// .container {
+// 	max-width: 1200px;
+// 	margin: 0 auto;
+// 	padding: 0 30px;
+// }
 
 header {
-	.container > * {
-		flex-basis: 170px;
-	}
-	.logo a {
-		display: block;
+	// .container > * {
+	// 	flex-basis: 170px;
+	// }
+	.logo {
+		max-width: 200px;
+		a {
+			display: block;
+		}
 	}
 
-	.container {
-		display: flex;
-		flex-wrap: wrap;
-		align-items: center;
-		row-gap: 50px;
-		justify-content: space-between;
-	}
+	// .container {
+	// 	display: flex;
+	// 	flex-wrap: wrap;
+	// 	align-items: center;
+	// 	row-gap: 50px;
+	// 	justify-content: space-between;
+	// }
 
 	.search-container {
 		position: relative;
@@ -112,38 +115,35 @@ header {
 			}
 		}
 	}
-	.favorites-container {
-		text-align: right;
 
-		.fav-icon {
-			cursor: pointer;
-			background: none;
-			border: 0;
-			font-size: 30px;
-			position: relative;
+	.fav-icon {
+		cursor: pointer;
+		background: none;
+		border: 0;
+		font-size: 30px;
+		position: relative;
+		border-radius: 50%;
+		-webkit-border-radius: 50%;
+		-moz-border-radius: 50%;
+		-ms-border-radius: 50%;
+		-o-border-radius: 50%;
+
+		.fav-number {
+			position: absolute;
+			font-size: 11px;
+			top: 1px;
+			right: -4px;
+			display: inline-block;
+			background-color: red;
+			color: white;
+			padding: 3px;
 			border-radius: 50%;
-			-webkit-border-radius: 50%;
-			-moz-border-radius: 50%;
-			-ms-border-radius: 50%;
-			-o-border-radius: 50%;
+			min-width: 20px;
+			min-height: 20px;
 
-			.fav-number {
-				position: absolute;
-				font-size: 11px;
-				top: 1px;
-				right: -4px;
-				display: inline-block;
-				background-color: red;
-				color: white;
-				padding: 3px;
-				border-radius: 50%;
-				min-width: 20px;
-				min-height: 20px;
-
-				&.show {
-					animation: favNbr 0.1s ease;
-					-webkit-animation: favNbr 0.1s ease;
-				}
+			&.show {
+				animation: favNbr 0.1s ease;
+				-webkit-animation: favNbr 0.1s ease;
 			}
 		}
 	}
@@ -345,11 +345,11 @@ aside {
 
 	.meal-header {
 		position: relative;
-	
-			img {
-				display: block;
-			}
-		
+
+		img {
+			display: block;
+		}
+
 		.random {
 			position: absolute;
 			left: 0;
@@ -429,13 +429,12 @@ aside {
 				background-color: $light-main-color;
 				border-color: $light-main-color;
 			}
-			&:focus{
+			&:focus {
 				box-shadow: none;
 			}
 		}
 	}
 }
-
 
 /* single meal css  */
 
@@ -495,10 +494,7 @@ aside {
 	align-items: center;
 }
 
-
-// register 
-
-
+// register
 
 // .meal-infos
 @media screen and (max-width: 767px) {

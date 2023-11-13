@@ -7,8 +7,9 @@ import SignIn from "./pages/SignIn";
 import RequireAuth from "./components/RequireAuth";
 import NotFound from "./pages/NotFound";
 import Unauthorized from "./pages/Unauthorized";
-import Dashboard from "./pages/Dashboard";
+import BackOffice from "./pages/BackOffice";
 import RootLayout from "./components/RootLayout";
+import Category from "./pages/Category";
 
 
 const ROLES = {
@@ -33,15 +34,15 @@ function App() {
         <Route element={<RequireAuth allowedRoles={[ROLES.Admin, ROLES.User]} />}>
 
           <Route path="/" element={<RootLayout />}>
-            <Route index element={<Home />}></Route>
-            <Route path="recipe/:id" element={<RecipeDetail />} />
+            <Route index element={<Home />} />
             <Route path="category/:name" element={<Category />} />
+            <Route path="recipe/:id" element={<RecipeDetail />} />
           </Route>
 
         </Route>
 
         <Route element={<RequireAuth allowedRoles={[ROLES.Admin]} />}>
-          <Route path="dashboard" element={Dashboard} />
+          <Route path="backoffice" element={<BackOffice />} />
         </Route>
 
         { /* catch all */}

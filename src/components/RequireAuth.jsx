@@ -6,7 +6,8 @@ function RequireAuth({ allowedRoles }) {
     const { auth } = useAuth();
     const location = useLocation();
 
-    console.log("location in required auth component", location)
+    console.log("auth inside requiredComponent" , auth);
+    console.log("location in requiredComponent", location)
 
     return (
 

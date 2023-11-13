@@ -3,14 +3,11 @@ import React, { createContext, useContext, useState } from 'react';
 const AppContext = createContext();
 
 export const SharedData = ({ children }) => {
-	const [ isRandom, setRandom ] = useState(false);
 	const [ recipes, setRecipes ] = useState([]);
 	const [ savedRecipes , setSavedRecipes] = useState([]);
 	const [ isOpened, setIsOpened ] = useState(false);
 
 	const contextValue = {
-		isRandom ,
-		setRandom,
 		recipes,
 		setRecipes,
 		setSavedRecipes,
