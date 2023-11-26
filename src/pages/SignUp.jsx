@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import axios from '../api/axios'
-import { useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 
 const SignUp = () => {
@@ -107,9 +107,13 @@ const SignUp = () => {
                                         type="password" className="form-control" id="psdConfirm" placeholder="confirm password" />
                                 </div>
 
-                                <button
-                                    disabled={!matchPwd ? true : false}
-                                    className="btn btn-primary">Sign Up</button>
+                                <div className='d-flex justify-content-between'>
+                                    <button
+                                        disabled={!matchPwd ? true : false}
+                                        className="btn btn-primary">Sign Up</button>
+                                   <p>Already have an account  <Link to={"/login"}>login</Link></p>
+                                </div>
+
                             </form>
 
 

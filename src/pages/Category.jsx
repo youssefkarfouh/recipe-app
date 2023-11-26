@@ -22,17 +22,30 @@ function Category() {
 
     useEffect(() => {
 
+        const isMounted = true;
+        const controller = new AbortController();
+        const getReciepesCateg = async (categorie) => {
+
+            try {
+                const response = await axios.get(`https://www.themealdb.com/api/json/v1/1/filter.php?c=${categorie}`,{signal:controller.signal})
+                isMounted &&  setRecipes(response.data.meals);
+            }
+            catch (error) {
+
+                console.log(error)
+            }
+
+        }
+
         getReciepesCateg(name)
+
+        return () => {
+            controller.abort();
+        };
 
     }, [name])
 
-    function getReciepesCateg(categorie) {
-        axios
-            .get(`https://www.themealdb.com/api/json/v1/1/filter.php?c=${categorie}`)
-            .then((res) => {
-                setRecipes(res.data.meals);
-            });
-    }
+
 
     return (
 

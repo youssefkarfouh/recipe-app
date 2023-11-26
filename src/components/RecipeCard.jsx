@@ -35,8 +35,6 @@ function RecipeCard({isRandom, recipe }) {
 
 
   }
-
-
   
 
   return (

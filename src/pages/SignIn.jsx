@@ -1,9 +1,12 @@
 import { useState, useEffect } from 'react'
-import axios from '../api/axios';
+
 import useAuth from '../hooks/useAuth';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import useAxiosPrivate from '../hooks/usePrivateAxios';
 
 function SignIn() {
+
+  const axiosPrivate =  useAxiosPrivate();
 
   const [err, setErrMsg] = useState('');
   const [user, setUser] = useState('');
@@ -14,6 +17,9 @@ function SignIn() {
   const navigate = useNavigate();
   const location = useLocation()
   const from = location.state ? location.state.from.pathname : "/"
+  
+
+  console.log("from sign in " , location)
 
 
   useEffect(() => {
@@ -25,12 +31,14 @@ function SignIn() {
     e.preventDefault();
 
     try {
-      const response = await axios.post('/auth', JSON.stringify({ user, pwd }),
+      const response = await axiosPrivate.post('/auth', JSON.stringify({ user, pwd }),
         {
           headers: { 'Content-Type': 'application/json' },
           withCredentials: true
         }
       );
+
+      console.log("sign in result" , response.data)
 
       const accessToken = response?.data?.accessToken;
       const roles = response?.data?.roles;

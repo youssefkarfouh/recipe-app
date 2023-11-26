@@ -99,6 +99,7 @@ function Header() {
               {mappedData}
             </ul>
           </div>
+          <Link to={"/employees"}>Employees</Link>
           <button className="fav-icon" onClick={() => setIsOpened(true)}>
             <IoHeart />
             <span

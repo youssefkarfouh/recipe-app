@@ -10,11 +10,12 @@ import Unauthorized from "./pages/Unauthorized";
 import BackOffice from "./pages/BackOffice";
 import RootLayout from "./components/RootLayout";
 import Category from "./pages/Category";
+import Employees from "./pages/Employees";
 
 
 const ROLES = {
-  "Admin": 2000,
-  "User": 2001
+  "Admin": "Admin",
+  "User": "User"
 }
 
 function App() {
@@ -37,6 +38,7 @@ function App() {
             <Route index element={<Home />} />
             <Route path="category/:name" element={<Category />} />
             <Route path="recipe/:id" element={<RecipeDetail />} />
+            <Route path="employees" element={<Employees />} />
           </Route>
 
         </Route>

@@ -1,13 +1,13 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect } from "react";
 import axios from "axios";
 import RecipeList from "../components/RecipeList";
-import Pagination from "../components/Pagination";
 import { useAppContext } from "../context/SharedData";
+
 
 
 function Home() {
 
-  const { setRecipes, recipes } = useAppContext()
+  const { setRecipes, recipes } = useAppContext();
 
 
   useEffect(() => {
