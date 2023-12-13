@@ -10,7 +10,8 @@ import Unauthorized from "./pages/Unauthorized";
 import BackOffice from "./pages/BackOffice";
 import RootLayout from "./components/RootLayout";
 import Category from "./pages/Category";
-import Employees from "./pages/Employees";
+import PersistLogin from "./components/PersistLogin";
+import Employees from "./pages/employees";
 
 
 const ROLES = {
@@ -32,20 +33,24 @@ function App() {
 
         { /* we want to protect these routes */}
 
-        <Route element={<RequireAuth allowedRoles={[ROLES.Admin, ROLES.User]} />}>
+        <Route element={<PersistLogin />}>
 
-          <Route path="/" element={<RootLayout />}>
-            <Route index element={<Home />} />
-            <Route path="category/:name" element={<Category />} />
-            <Route path="recipe/:id" element={<RecipeDetail />} />
-            <Route path="employees" element={<Employees />} />
+          <Route element={<RequireAuth allowedRoles={[ROLES.Admin, ROLES.User]} />}>
+
+            <Route path="/" element={<RootLayout />}>
+              <Route index element={<Home />} />
+              <Route path="category/:name" element={<Category />} />
+              <Route path="recipe/:id" element={<RecipeDetail />} />
+              <Route path="employees" element={<Employees/>} />
+            </Route>
+
           </Route>
 
+          <Route element={<RequireAuth allowedRoles={[ROLES.Admin]} />}>
+            <Route path="backoffice" element={<BackOffice />} />
+          </Route>
         </Route>
 
-        <Route element={<RequireAuth allowedRoles={[ROLES.Admin]} />}>
-          <Route path="backoffice" element={<BackOffice />} />
-        </Route>
 
         { /* catch all */}
         <Route path="*" element={<NotFound />} />

@@ -15,7 +15,6 @@ ReactDOM.createRoot(document.getElementById('root')).render(
             <Route path='/*' element={<App />} />
           </Routes>
         </SharedData>
-
       </AuthProvider>
     </Router>
   </React.StrictMode>,

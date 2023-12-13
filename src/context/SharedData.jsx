@@ -10,10 +10,10 @@ export const SharedData = ({ children }) => {
 	const contextValue = {
 		recipes,
 		setRecipes,
-		setSavedRecipes,
 		savedRecipes,
+		setSavedRecipes,
+		isOpened,
 		setIsOpened,
-		isOpened
 	};
 
 	return <AppContext.Provider value={contextValue}>{children}</AppContext.Provider>;

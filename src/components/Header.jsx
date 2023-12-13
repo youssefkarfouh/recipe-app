@@ -6,6 +6,8 @@ import axios from "axios";
 import useClickOutside from "../hooks/useClickOutside";
 import useAuth from "../hooks/useAuth";
 import { useAppContext } from "../context/SharedData";
+import { IoPerson } from "react-icons/io5";
+
 
 
 function Header() {
@@ -99,7 +101,7 @@ function Header() {
               {mappedData}
             </ul>
           </div>
-          <Link to={"/employees"}>Employees</Link>
+          <Link to={'/employees'}>Employees</Link>
           <button className="fav-icon" onClick={() => setIsOpened(true)}>
             <IoHeart />
             <span
@@ -109,7 +111,14 @@ function Header() {
             </span>
           </button>
           <div className="logged-user">
-            <span>Hello {auth.user} </span>
+            <div class="dropdown">
+              <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                <IoPerson size={30}/>
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                <li></li>                
+              </ul>
+            </div>
           </div>
         </div>
       </div>
