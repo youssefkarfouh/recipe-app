@@ -1,28 +1,33 @@
 import React, { useEffect } from 'react'
-import axios from '../api/axios'
+import useAxiosPrivate from '../hooks/usePrivateAxios';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 function Employees() {
 
 
-    useEffect(() => {
+    const location = useLocation();
+    const navigate = useNavigate();
+
+    const axiosPrivate = useAxiosPrivate();
+
+    const getEmployees = async () => {
 
         try {
 
-            const fetchEmpoloyees = async () => {
-
-                const response = await axios.get("/employees");
-                console.log("employees", response)
-            }
-
-            fetchEmpoloyees()
+            const response = await axiosPrivate.get("/employees");
+            console.log("employees", response)
         }
         catch (err) {
             console.log("error ", err)
+            navigate('/login', { state: { from: location } })
         }
 
-    }, [])
+    }
+
+
+
     return (
-        <div>Employees</div>
+        <button onClick={getEmployees}>getEmplpoyess</button>
     )
 }
 
