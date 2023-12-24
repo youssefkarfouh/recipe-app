@@ -1,18 +1,20 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { Outlet } from 'react-router-dom'
 import Header from './Header';
 import Aside from './Aside';
 import { useAppContext } from '../context/SharedData';
 import Categories from './Categories';
-import axios from 'axios';
+import useAuth from '../hooks/useAuth';
 
 function RootLayout() {
 
   const { setSavedRecipes, setRecipes } = useAppContext();
+  const { persist } = useAuth()
 
   useEffect(() => {
     // fetchCategories();
     getSavedRecipes();
+    console.log('persist in layout' , persist)
   }, [])
 
   function getSavedRecipes() {
@@ -24,11 +26,13 @@ function RootLayout() {
 
   return (
     <div className='App'>
+
+      isPersist in layout : { persist === true ? 'yes' : 'no'}
       <Header />
       <main>
         <Aside />
         <div className="container">
-          <Categories/>
+          <Categories />
           <Outlet />
         </div>
       </main>

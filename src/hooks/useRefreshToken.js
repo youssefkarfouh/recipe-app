@@ -14,11 +14,11 @@ function useRefreshToken() {
 
         setAuth(prev => {
             
-            console.log("previous auth" , JSON.stringify(prev));
-            console.log("current token" , response.data.accessToken);
+
             return {
                  ...prev, 
                  roles : response.data.roles,
+                 user : response.data.user,
                  accessToken: response.data.accessToken }
         });
 

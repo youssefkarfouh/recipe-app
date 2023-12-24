@@ -6,25 +6,31 @@ import useAxiosPrivate from '../hooks/usePrivateAxios';
 
 function SignIn() {
 
-  const axiosPrivate =  useAxiosPrivate();
+  const axiosPrivate = useAxiosPrivate();
 
   const [err, setErrMsg] = useState('');
   const [user, setUser] = useState('');
   const [pwd, setPwd] = useState('');
 
-  const { setAuth } = useAuth();
+
+
+  const { setAuth, persist, setPersist } = useAuth();
 
   const navigate = useNavigate();
   const location = useLocation()
   const from = location.state ? location.state.from.pathname : "/"
-  
-
-  console.log("from sign in " , location)
 
 
   useEffect(() => {
     setErrMsg('')
   }, [user, pwd])
+
+  useEffect(() => {
+    localStorage.setItem("persist", persist)
+  }, [persist])
+
+
+
 
   const handleSubmit = async (e) => {
 
@@ -38,7 +44,6 @@ function SignIn() {
         }
       );
 
-      console.log("sign in result" , response.data)
 
       const accessToken = response?.data?.accessToken;
       const roles = response?.data?.roles;
@@ -46,13 +51,11 @@ function SignIn() {
       setUser('');
       setPwd('');
 
-      console.log("from in sigin ", from)
       navigate(from, { replace: true })
 
 
     } catch (err) {
 
-      console.log("err", err)
       if (!err?.response) {
         setErrMsg('No Server Response');
       } else if (err.response?.status === 400) {
@@ -65,8 +68,13 @@ function SignIn() {
     }
   };
 
+
+
   return (
+
+    
     <section className='login p-5'>
+    isPersist in sign in : { persist === true ? 'yes' : 'no'}
 
       <div className="container">
         <div className="row justify-content-center">
@@ -75,7 +83,7 @@ function SignIn() {
             <h3 className="text-center my-5">Sign in</h3>
 
             {err !== '' &&
-              <div class="alert alert-danger" role="alert">{err}</div>
+              <div className="alert alert-danger" role="alert">{err}</div>
             }
 
             <form onSubmit={handleSubmit}>
@@ -94,6 +102,12 @@ function SignIn() {
                   required
                   onChange={(e) => setPwd(e.target.value)}
                   type="password" className="form-control" id="password" placeholder="password" />
+              </div>
+              <div className="form-check">
+                <input className="form-check-input" type="checkbox" value={persist}  id="persist" onChange={(e) => setPersist(e.target.checked)} />
+                <label className="form-check-label" htmlFor="persist">
+                  Checked checkbox
+                </label>
               </div>
               <button
                 className="btn btn-primary">Login

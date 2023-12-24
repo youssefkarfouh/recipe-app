@@ -26,7 +26,7 @@ const Aside = () => {
 
     const savedData = savedRecipes.map((ele, index) => {
         return <li key={index}>
-            <Link to={`/recipe/${ele.idMeal}`} target="_blank">
+            <Link to={`/recipe/${ele.idMeal}`}>
                 <img src={ele.strMealThumb} alt={ele} />
             </Link>
             <span className="removeMeal" onClick={() => removeMeal(ele.idMeal)}>

@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import logo from '../assets/images/logo.png';
 import { IoHeart } from "react-icons/io5";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import useClickOutside from "../hooks/useClickOutside";
 import useAuth from "../hooks/useAuth";
 import { useAppContext } from "../context/SharedData";
 import { IoPerson } from "react-icons/io5";
+import useLogout from "../hooks/useLogout";
 
 
 
@@ -14,7 +15,10 @@ function Header() {
 
 
   const { setRecipes, setRandom, savedRecipes, setIsOpened } = useAppContext()
-  const { auth } = useAuth();
+  const { auth , persist} = useAuth();
+  const logout = useLogout();
+  const navigate = useNavigate();
+  const location = useLocation();
 
 
   const [formData, setFormData] = useState({ search: '' })
@@ -77,6 +81,13 @@ function Header() {
     setShow(false)
   }
 
+  async function handleLogout(){
+
+    await logout();
+    navigate("/login")
+
+  }
+
   return (
     <header>
       <div className="container">
@@ -113,10 +124,12 @@ function Header() {
           <div className="logged-user">
             <div class="dropdown">
               <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                <IoPerson size={30}/>
+                <IoPerson size={20}/>
               </button>
               <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                <li></li>                
+                <li>{auth.user}👋</li> 
+                <li onClick={handleLogout}>Logout</li> 
+                <li>isPersist : { persist === true ? 'yes' : 'no'}</li>
               </ul>
             </div>
           </div>
