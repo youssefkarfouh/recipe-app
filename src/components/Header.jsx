@@ -129,7 +129,6 @@ function Header() {
               <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                 <li>{auth.user}👋</li> 
                 <li onClick={handleLogout}>Logout</li> 
-                <li>isPersist : { persist === true ? 'yes' : 'no'}</li>
               </ul>
             </div>
           </div>

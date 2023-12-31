@@ -12,7 +12,6 @@ function RootLayout() {
   const { persist } = useAuth()
 
   useEffect(() => {
-    // fetchCategories();
     getSavedRecipes();
     console.log('persist in layout' , persist)
   }, [])
@@ -27,7 +26,6 @@ function RootLayout() {
   return (
     <div className='App'>
 
-      isPersist in layout : { persist === true ? 'yes' : 'no'}
       <Header />
       <main>
         <Aside />

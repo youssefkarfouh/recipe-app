@@ -18,8 +18,8 @@ function Employees() {
             console.log("employees", response)
         }
         catch (err) {
-            console.log("error ", err)
-            navigate('/login', { state: { from: location } })
+            console.log("error in employess catch ", err)
+            // navigate('/login', { state: { from: location } })
         }
 
     }
