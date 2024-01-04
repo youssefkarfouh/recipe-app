@@ -40,7 +40,7 @@ function App() {
             <Route path="/" element={<RootLayout />}>
               <Route index element={<Home />} />
               <Route path="category/:name" element={<Category />} />
-              <Route path="recipe/:id" element={<RecipeDetail />} />
+              <Route path="category/:cat/:id" element={<RecipeDetail />} />
               <Route path="employees" element={<Employees/>} />
             </Route>
 

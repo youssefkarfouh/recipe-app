@@ -1,6 +1,13 @@
 $main-color: #e9665c;
 $light-main-color: #e9655c5d;
 
+@mixin customGrid($minSize , $gap) {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax($minSize, 1fr));
+	gap: $gap;
+}
+
+// general
 *,
 ::before,
 ::after {
@@ -24,30 +31,16 @@ ul {
 	padding-left: 10px;
 }
 
-// .container {
-// 	max-width: 1200px;
-// 	margin: 0 auto;
-// 	padding: 0 30px;
-// }
 
+//end general
 header {
-	// .container > * {
-	// 	flex-basis: 170px;
-	// }
 	.logo {
 		max-width: 200px;
+
 		a {
 			display: block;
 		}
 	}
-
-	// .container {
-	// 	display: flex;
-	// 	flex-wrap: wrap;
-	// 	align-items: center;
-	// 	row-gap: 50px;
-	// 	justify-content: space-between;
-	// }
 
 	.search-container {
 		position: relative;
@@ -67,6 +60,7 @@ header {
 				outline: 0;
 			}
 		}
+
 		.search-list {
 			max-height: 300px;
 			padding: 0;
@@ -94,6 +88,7 @@ header {
 						color: $main-color;
 					}
 				}
+
 				a {
 					color: white;
 					text-decoration: none;
@@ -102,12 +97,14 @@ header {
 					-moz-transition: 0.3s all;
 					-ms-transition: 0.3s all;
 					-o-transition: 0.3s all;
+
 					span {
 						color: yellow;
 						font-weight: bold;
 					}
 				}
 			}
+
 			&.show {
 				z-index: 99;
 				opacity: 1;
@@ -239,8 +236,10 @@ aside {
 				display: flex;
 				align-items: center;
 				justify-content: center;
+
 				svg {
 					fill: rgb(154, 154, 154);
+
 					&:hover {
 						fill: rgb(255, 42, 42);
 					}
@@ -274,69 +273,53 @@ aside {
 }
 
 .categories {
-	margin: 0 0 50px;
+	@include customGrid(170px, 30px);
 
-	ul {
-		padding: 20px 0;
-		display: flex;
-		column-gap: 15px;
-		max-width: 700px;
-		margin: 0 auto;
-		overflow: auto;
+	.category-item {
+		position: relative;
+		cursor: pointer;
 
-		li {
-			text-align: center;
-			cursor: pointer;
-			font-size: 13px;
-			font-weight: bold;
-			color: rgba(109, 109, 109, 0.871);
-			transition: 0.3s all;
-			-webkit-transition: 0.3s all;
-			-moz-transition: 0.3s all;
-			-ms-transition: 0.3s all;
-			-o-transition: 0.3s all;
 
-			img {
-				width: 70px;
-				height: 70px;
-				object-fit: cover;
-				box-shadow: 0 3px 10px 0px rgba(51, 51, 51, 0.1019607843);
-				border: 2px solid white;
-				border-radius: 50%;
-				display: inline-block;
-				-webkit-border-radius: 50%;
-				-moz-border-radius: 50%;
-				-ms-border-radius: 50%;
-				-o-border-radius: 50%;
-			}
-			&:hover,
-			&.active {
-				color: $main-color;
+		&.active {
+			background-color: rgba(0, 0, 0, 0.535);
+		}
+
+		&::before {
+			content: '';
+			position: absolute;
+			width: 100%;
+			height: 0%;
+			bottom: 0;
+			background-color: rgba(0, 0, 0, 0.535);
+			transition: .3s all;
+			-webkit-transition: .3s all;
+			-moz-transition: .3s all;
+			-ms-transition: .3s all;
+			-o-transition: .3s all;
+		}
+
+		&:hover {
+			&::before {
+				height: 100%;
 			}
 		}
-		&::-webkit-scrollbar {
-			width: 10px;
-			height: 10px;
-		}
 
-		&::-webkit-scrollbar-track {
-			box-shadow: inset 0 0 5px rgba(128, 128, 128, 0.411);
-
-			border-radius: 10px;
-			-webkit-border-radius: 10px;
-			-moz-border-radius: 10px;
-			-ms-border-radius: 10px;
-			-o-border-radius: 10px;
-		}
-		&::-webkit-scrollbar-thumb {
-			background: $main-color;
-			border-radius: 10px;
-			-webkit-border-radius: 10px;
-			-moz-border-radius: 10px;
-			-ms-border-radius: 10px;
-			-o-border-radius: 10px;
+		.category-name {
+			color: white;
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			-webkit-transform: translate(-50%, -50%);
+			-moz-transform: translate(-50%, -50%);
+			-ms-transform: translate(-50%, -50%);
+			-o-transform: translate(-50%, -50%);
 		}
 	}
+}
+
+.meals-container {
+	@include customGrid(250px, 20px);
 }
 
 .meal {
@@ -350,16 +333,8 @@ aside {
 			display: block;
 		}
 
-		.random {
-			position: absolute;
-			left: 0;
-			top: 10px;
-			font-size: 14px;
-			background-color: white;
-			padding: 5px 10px;
-			color: #536472;
-		}
 	}
+
 	.meal-body {
 		display: flex;
 		align-items: center;
@@ -391,6 +366,7 @@ aside {
 			display: flex;
 			align-items: center;
 			justify-content: center;
+
 			&.active {
 				svg {
 					fill: $main-color;
@@ -400,17 +376,13 @@ aside {
 	}
 }
 
-.meals-container {
-	display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-	gap: 20px;
-}
 
 // paggination
 
 .pagination {
 	justify-content: center;
 	gap: 1.5rem;
+
 	.page-item {
 		&.active {
 			.page-link {
@@ -429,6 +401,7 @@ aside {
 				background-color: $light-main-color;
 				border-color: $light-main-color;
 			}
+
 			&:focus {
 				box-shadow: none;
 			}
@@ -443,19 +416,24 @@ aside {
 		display: grid;
 		gap: 40px;
 		box-shadow: none;
+
 		h1 {
 			margin: 0;
 		}
+
 		img {
 			max-width: 300px;
 		}
+
 		h2 {
 			margin: 20px 0;
 		}
+
 		p {
 			font-size: 14px;
 			line-height: 26px;
 		}
+
 		.tags {
 			span {
 				display: inline-block;
@@ -476,6 +454,7 @@ aside {
 		.meal-infos {
 			li {
 				margin-bottom: 10px;
+
 				svg {
 					margin-right: 10px;
 					vertical-align: middle;
@@ -494,7 +473,6 @@ aside {
 	align-items: center;
 }
 
-// register
 
 // .meal-infos
 @media screen and (max-width: 767px) {
@@ -513,8 +491,34 @@ aside {
 		top: 10px;
 		opacity: 0;
 	}
+
 	100% {
 		top: 5px;
 		opacity: 1;
 	}
 }
+
+// to style scrolbar
+
+// &::-webkit-scrollbar {
+// 	width: 10px;
+// 	height: 10px;
+// }
+
+// &::-webkit-scrollbar-track {
+// 	box-shadow: inset 0 0 5px rgba(128, 128, 128, 0.411);
+
+// 	border-radius: 10px;
+// 	-webkit-border-radius: 10px;
+// 	-moz-border-radius: 10px;
+// 	-ms-border-radius: 10px;
+// 	-o-border-radius: 10px;
+// }
+// &::-webkit-scrollbar-thumb {
+// 	background: $main-color;
+// 	border-radius: 10px;
+// 	-webkit-border-radius: 10px;
+// 	-moz-border-radius: 10px;
+// 	-ms-border-radius: 10px;
+// 	-o-border-radius: 10px;
+// }

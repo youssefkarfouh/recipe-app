@@ -51,7 +51,7 @@ function Category() {
 
         <>
             <div className="meals-container">
-                <RecipeList recipes={currentRecipes} isRandom={false} />
+                <RecipeList recipes={currentRecipes}/>
             </div>
             <Pagination currentPage={currentPage} recipesPerPage={recipesPerPage} totalRecipes={recipes.length} paginate={paginate} />
         </>

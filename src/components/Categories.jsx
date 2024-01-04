@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "../api/axios";
-import { useAppContext } from "../context/SharedData";
 
 
 function Categories() {
@@ -13,38 +12,43 @@ function Categories() {
 
 
   useEffect(() => {
+
+    function fetchCategories() {
+      axios
+        .get(`https://www.themealdb.com/api/json/v1/1/categories.php`)
+        .then((res) => {
+          setCategories(res.data.categories);
+        });
+    }
+
+
     fetchCategories();
-  
+
   }, [])
 
 
-  function handClick(category) {
-    
-    navigate(`/category/${category.strCategory}`)
+  function handClick(strCategory) {
 
-    setSelectedCateg(category.strCategory);
-  }
+    navigate(`/category/${strCategory}`)
 
-  function fetchCategories() {
-    axios
-      .get(`https://www.themealdb.com/api/json/v1/1/categories.php`)
-      .then((res) => {
-        setCategories(res.data.categories);
-      });
+    setSelectedCateg(strCategory);
   }
 
 
 
   const listCategories = categories?.map((cat) => (
-    <li key={cat.idCategory} className={cat.strCategory === selectedCateg ? "active" : ""} onClick={() => handClick(cat)}>
+
+    <div key={cat.idCategory}
+      className={`category-item ${cat.strCategory === selectedCateg ? "active" : ""}`}
+      onClick={() => handClick(cat.strCategory)}>
       <img src={cat.strCategoryThumb} alt={cat.strCategory} />
-      <span>{cat.strCategory}</span>
-    </li>
+      <span className='category-name'>{cat.strCategory}</span>
+    </div>
   ));
 
   return (
     <div className="categories">
-      <ul>{listCategories}</ul>
+      {listCategories}
     </div>
   );
 }

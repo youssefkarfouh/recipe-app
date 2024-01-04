@@ -1,10 +1,13 @@
 import React from "react";
-import {Link, useNavigate } from "react-router-dom";
+import {Link, useNavigate, useParams } from "react-router-dom";
 import { IoHeart } from "react-icons/io5";
 import { useAppContext } from "../context/SharedData";
 
 
-function RecipeCard({isRandom, recipe }) {
+function RecipeCard({recipe }) {
+
+  const { name } = useParams();
+
 
   const { setSavedRecipes, savedRecipes } = useAppContext()
 
@@ -40,8 +43,8 @@ function RecipeCard({isRandom, recipe }) {
   return (
     <div className="meal" >
       <div className="meal-header" >
-        {isRandom && <span className="random">Random recipe</span>}
-        <Link to={`/recipe/${recipe.idMeal}`}  >
+  
+        <Link to={`/category/${name}/${recipe.idMeal}`}  >
         <img
           src={recipe.strMealThumb}
           alt={`${recipe.strMeal}`}
@@ -50,7 +53,7 @@ function RecipeCard({isRandom, recipe }) {
         </Link>
       </div>
       <div className="meal-body">
-        <h5>{recipe.strMeal}</h5>
+        <h5>{recipe.strMeal} </h5>
         <button className={`fav-btn ${isMealExist(savedRecipes, recipe.idMeal) ? 'active' : ''}`} onClick={() => saveRecipe(recipe)}>
           <IoHeart />
         </button>

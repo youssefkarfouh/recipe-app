@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
 
 import { IoClose } from "react-icons/io5";
 import { Link } from 'react-router-dom';
@@ -9,10 +9,22 @@ import { useAppContext } from '../context/SharedData';
 
 const Aside = () => {
 
-    const {savedRecipes ,setSavedRecipes, isOpened , setIsOpened} = useAppContext()
+    const { savedRecipes, setSavedRecipes, isOpened, setIsOpened } = useAppContext()
+
+    useEffect(() => {
+
+        function getSavedRecipes() {
+            const data = JSON.parse(localStorage.getItem('recipes'))
+    
+            if (data) setSavedRecipes(data)
+        }
+        getSavedRecipes();
+    }, [])
+
+   
 
 
-    const ref = useClickOutside(()=>{
+    const ref = useClickOutside(() => {
         setIsOpened(false)
     });
 
