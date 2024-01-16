@@ -11,7 +11,7 @@ function RootLayout() {
     <div className='App'>
 
       <Header />
-      <main>
+      <main className='pt-28'>
         <Aside />
         <div className="container">
           <Outlet />

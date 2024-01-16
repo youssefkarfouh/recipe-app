@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import logo from '../assets/images/logo.png';
+import logo from "../assets/images/logo.png";
 import { IoHeart } from "react-icons/io5";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -8,133 +8,123 @@ import useAuth from "../hooks/useAuth";
 import { useAppContext } from "../context/SharedData";
 import { IoPerson } from "react-icons/io5";
 import useLogout from "../hooks/useLogout";
-
-
+import { IconContext } from "react-icons";
 
 function Header() {
-
-
-  const { setRecipes, setRandom, savedRecipes, setIsOpened } = useAppContext()
-  const { auth , persist} = useAuth();
+  const { setRecipes, savedRecipes, setIsOpened } = useAppContext();
+  const { auth, persist } = useAuth();
   const logout = useLogout();
   const navigate = useNavigate();
   const location = useLocation();
 
-
-  const [formData, setFormData] = useState({ search: '' })
-  const [searchList, setSearchList] = useState([])
+  const [formData, setFormData] = useState("");
+  const [searchList, setSearchList] = useState([]);
   const [show, setShow] = useState(false);
 
-
   const ref = useClickOutside(() => {
-    setShow(false)
+    setShow(false);
   });
 
-  let mappedData = searchList && formData.search !== "" ?
-    [<li className="text-center" key={0}>
-      <button className="btn btn-warning" onClick={handlSearch}>You want to search for : {formData.search}</button></li>]
-    : [<li key={12121}><a>Ooops !! Nothing Found</a></li>]
+  let mappedData = [
+    searchList?.map((ele, index) => {
+      return (
+        <>
+          <li key={index + 1} className="cursor-pointer p-3">
+            <Link
+              to={`category/:cat/${ele.idMeal}`}
+              dangerouslySetInnerHTML={highlite(ele.strMeal, formData)}
+            ></Link>
+          </li>
+        </>
+      );
+    }),
+  ];
 
-  mappedData = [searchList?.map((ele, index) => {
-    return (
-      <>
-        <li key={index + 1} >
-          <Link to={`/recipe/${ele.idMeal}`} dangerouslySetInnerHTML={highlite(ele.strMeal, formData.search)}></Link>
-        </li>
-      </>
-    )
-  }), ...mappedData]
-
-
-  // highlite text in the search list 
+  // highlite text in the search list
   function highlite(sourceText, strHighlite) {
-
     let regex = new RegExp(strHighlite, "ig");
     let res = sourceText.replace(regex, `<span>${strHighlite}</span>`);
 
     return {
-      __html: res
+      __html: res,
     };
-
   }
   function handlChange(e) {
-
     const value = e.target.value;
 
-    setShow(true)
     setSearchList([]);
-    setFormData({ search: value })
+    setFormData(value);
 
     axios
       .get(`https://www.themealdb.com/api/json/v1/1/search.php?s=${value}`)
       .then((res) => {
         setSearchList(res.data.meals);
+        setShow(true);
       });
-
   }
   function handlSearch(e) {
     if (e) {
       e.preventDefault();
-      setRandom(false)
     }
-    setRecipes(searchList)
-    setShow(false)
+    setRecipes(searchList);
   }
 
-  async function handleLogout(){
-
+  async function handleLogout() {
     await logout();
-    navigate("/login")
-
+    navigate("/login");
   }
 
   return (
-    <header>
-      <div className="container">
-        <div className="d-flex align-items-center justify-content-between py-3">
-          <div className="logo">
-            <Link to="/">
-              <img src={logo} alt="logo" />
-            </Link>
-          </div>
-          <div className="search-container">
-            <form id="form" onSubmit={handlSearch}>
-              <input
-                type="search"
-                id="searchInput"
-                name="search"
-                placeholder="search..."
-                onChange={handlChange}
-                value={formData.search}
-              />
-            </form>
-            <ul ref={ref} className={`search-list ${show ? 'show' : ""}`}>
-              {mappedData}
-            </ul>
-          </div>
-          <Link to={'/employees'}>Employees</Link>
-          <button className="fav-icon" onClick={() => setIsOpened(true)}>
-            <IoHeart />
-            <span
-              className="fav-number"
-            >
-              {savedRecipes.length}
-            </span>
-          </button>
-          <div className="logged-user">
-            <div class="dropdown">
-              <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                <IoPerson size={20}/>
-              </button>
-              <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                <li>{auth.user}👋</li> 
-                <li onClick={handleLogout}>Logout</li> 
+    <IconContext.Provider value={{ size: "25px" }}>
+      <header className="fixed top-0 w-full bg-white h-20">
+        <div className="container">
+          <div className="flex items-center justify-between py-4">
+            <div className="max-w-48">
+              <Link to="/" className="block">
+                <img src={logo} alt="logo" />
+              </Link>
+            </div>
+            <div className="relative basis-[300px]">
+              <form id="form" onSubmit={handlSearch}>
+                <input
+                  className="width-full block h-[2rem] w-full rounded-2xl border bg-slate-100  px-3 py-1 text-sm text-black outline-none"
+                  type="input"
+                  id="searchInput"
+                  name="search"
+                  placeholder="search..."
+                  onChange={handlChange}
+                  value={formData}
+                />
+              </form>
+              <ul
+                ref={ref}
+                className={`absolute left-0 max-h-80 w-full overflow-auto bg-main-50 p-0 transition-all ${show ? "translate-y-0 opacity-100" : "translate-y-1/4 opacity-0"}`}
+              >
+                {mappedData}
               </ul>
+            </div>
+            <Link className="hidden" to={"/employees"}>
+              Employees
+            </Link>
+
+            <div className="flex gap-8">
+              <button
+                className="relative cursor-pointer rounded-full border-none bg-none"
+                onClick={() => setIsOpened(true)}
+              >
+                <IoHeart />
+                <span className="bg-700 absolute -right-2 -top-2 inline-block size-4 rounded-full bg-main-600 text-xs  text-main-50">
+                  {savedRecipes.length}
+                </span>
+              </button>
+              <div className="logged-user">
+                <IoPerson />
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </header>
+      </header>
+    </IconContext.Provider>
   );
 }
 
