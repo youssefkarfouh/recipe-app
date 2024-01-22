@@ -11,7 +11,6 @@ import BackOffice from "./pages/BackOffice";
 import RootLayout from "./components/RootLayout";
 import Category from "./pages/Category";
 import PersistLogin from "./components/PersistLogin";
-import Employees from "./pages/employees";
 
 
 const ROLES = {
@@ -41,7 +40,6 @@ function App() {
               <Route index element={<Home />} />
               <Route path="category/:name" element={<Category />} />
               <Route path="category/:cat/:id" element={<RecipeDetail />} />
-              <Route path="employees" element={<Employees/>} />
             </Route>
 
           </Route>

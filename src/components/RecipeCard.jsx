@@ -1,10 +1,11 @@
 import React from "react";
-import {Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { IoHeart } from "react-icons/io5";
 import { useAppContext } from "../context/SharedData";
+import ImageFallback from "./ImageFallback";
 
 
-function RecipeCard({recipe }) {
+function RecipeCard({ recipe }) {
 
   const { name } = useParams();
 
@@ -13,24 +14,22 @@ function RecipeCard({recipe }) {
 
   function isMealExist(savedData, idMeal) {
 
-    for (let i = 0; i < savedData.length; i++) {
-      if (savedData[i].idMeal === idMeal) {
-        return true;
-      }
-    }
-    return false;
+    return savedData.some(recipe => recipe.idMeal === idMeal);
+
   }
 
   function saveRecipe(recipe) {
     const { strMealThumb, strMeal, idMeal } = recipe;
     const recipeObj = { strMealThumb, idMeal, strMeal }
-    const result = isMealExist(savedRecipes, idMeal)
+    const isRecipeExist = isMealExist(savedRecipes, idMeal)
 
-    if (result) {
+    // if exist delete it 
+    if (isRecipeExist) {
       const filteredData = savedRecipes.filter(ele => ele.idMeal !== idMeal)
       setSavedRecipes(prev => filteredData)
       localStorage.setItem("recipes", JSON.stringify(filteredData))
     }
+    // otherwise  save it 
     else {
       setSavedRecipes(prev => [...prev, recipeObj])
       localStorage.setItem("recipes", JSON.stringify([...savedRecipes, recipeObj]))
@@ -38,24 +37,25 @@ function RecipeCard({recipe }) {
 
 
   }
-  
+
 
   return (
-    <div className="meal" >
-      <div className="meal-header" >
-  
+    <div className="shadow-[0_0_10px_2px_#3333331a]" >
+      <div className="relative" >
+
         <Link to={`/category/${name}/${recipe.idMeal}`}  >
-        <img
-          src={recipe.strMealThumb}
-          alt={`${recipe.strMeal}`}
-          title={`${recipe.strMeal}`}
-        />
+          <ImageFallback
+            src={recipe.strMealThumb}
+            alt={`${recipe.strMeal}`}
+            title={`${recipe.strMeal}`}
+          />
+
         </Link>
       </div>
-      <div className="meal-body">
-        <h5>{recipe.strMeal} </h5>
-        <button className={`fav-btn ${isMealExist(savedRecipes, recipe.idMeal) ? 'active' : ''}`} onClick={() => saveRecipe(recipe)}>
-          <IoHeart />
+      <div className="flex items-center justify-between py-6 px-4">
+        <h5 className="whitespace-nowrap text-ellipsis overflow-hidden max-w-56 text-base">{recipe.strMeal} </h5>
+        <button className={`p-0 border-0 bg-transparent cursor-pointer text-lg  transition-all`}>
+          <IoHeart size={25} className={`hover:text-main transition-colors ${isMealExist(savedRecipes, recipe.idMeal) ? 'text-main':'text-slate-200'}`} onClick={() => saveRecipe(recipe)} />
         </button>
       </div>
     </div>

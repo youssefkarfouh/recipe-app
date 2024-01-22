@@ -11,7 +11,7 @@ import useLogout from "../hooks/useLogout";
 import { IconContext } from "react-icons";
 
 function Header() {
-  const { setRecipes, savedRecipes, setIsOpened } = useAppContext();
+  const { savedRecipes, setIsOpened } = useAppContext();
   const { auth, persist } = useAuth();
   const logout = useLogout();
   const navigate = useNavigate();
@@ -31,7 +31,7 @@ function Header() {
         <>
           <li key={index + 1} className="cursor-pointer p-3">
             <Link
-              to={`category/:cat/${ele.idMeal}`}
+              to={`category/${ele.strCategory}/${ele.idMeal}`}
               dangerouslySetInnerHTML={highlite(ele.strMeal, formData)}
             ></Link>
           </li>
@@ -58,15 +58,17 @@ function Header() {
     axios
       .get(`https://www.themealdb.com/api/json/v1/1/search.php?s=${value}`)
       .then((res) => {
+        console.log("res" , res)
         setSearchList(res.data.meals);
         setShow(true);
       });
   }
   function handlSearch(e) {
+    console.log("submitted")
     if (e) {
       e.preventDefault();
     }
-    setRecipes(searchList);
+    // setRecipes(searchList);
   }
 
   async function handleLogout() {
@@ -76,7 +78,7 @@ function Header() {
 
   return (
     <IconContext.Provider value={{ size: "25px" }}>
-      <header className="fixed top-0 w-full bg-white h-20">
+      <header className="fixed top-0 z-10 h-20 w-full bg-white">
         <div className="container">
           <div className="flex items-center justify-between py-4">
             <div className="max-w-48">
@@ -98,15 +100,11 @@ function Header() {
               </form>
               <ul
                 ref={ref}
-                className={`absolute left-0 max-h-80 w-full overflow-auto bg-main-50 p-0 transition-all ${show ? "translate-y-0 opacity-100" : "translate-y-1/4 opacity-0"}`}
+                className={`absolute left-0 max-h-80 w-full overflow-auto bg-main-50 p-0 transition-all duration-300 ${show ? "visible translate-y-0 opacity-100" : "invisible translate-y-1/4 opacity-0"}`}
               >
                 {mappedData}
               </ul>
             </div>
-            <Link className="hidden" to={"/employees"}>
-              Employees
-            </Link>
-
             <div className="flex gap-8">
               <button
                 className="relative cursor-pointer rounded-full border-none bg-none"

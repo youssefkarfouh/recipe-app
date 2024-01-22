@@ -413,10 +413,7 @@ aside {
 
 .single-meal-page {
 	.meal {
-		display: grid;
-		gap: 40px;
-		box-shadow: none;
-
+		
 		h1 {
 			margin: 0;
 		}
