@@ -1,130 +1,145 @@
-import { useEffect, useState } from 'react';
-import axios from '../api/axios'
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-
+import { useEffect, useState } from "react";
+import axios from "../api/axios";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const SignUp = () => {
+  const [err, setErrMsg] = useState("");
+  const [user, setUser] = useState("");
+  const [pwd, setPwd] = useState("");
+  const [confirmPwd, setConfirmPwd] = useState("");
+  const [matchPwd, setMatchPwd] = useState(false);
 
-    const [err, setErrMsg] = useState('');
-    const [user, setUser] = useState('');
-    const [pwd, setPwd] = useState('');
-    const [confirmPwd, setConfirmPwd] = useState('');
-    const [matchPwd, setMatchPwd] = useState(false);
+  useEffect(() => {
+    setErrMsg("");
+  }, [user, pwd, confirmPwd]);
 
+  useEffect(() => {
+    setMatchPwd(pwd === confirmPwd && pwd!== '' && confirmPwd!== '');
+  }, [pwd, confirmPwd]);
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-    useEffect(() => {
-        setErrMsg('')
-    }, [user, pwd, confirmPwd])
+    console.log("{ user, pwd }", user, pwd);
+    try {
+      const response = await axios.post(
+        "/register",
+        JSON.stringify({ user, pwd }),
+        {
+          headers: { "Content-Type": "application/json" },
+          withCredentials: true,
+        },
+      );
 
+      setUser("");
+      setPwd("");
+      setConfirmPwd("");
 
-    useEffect(() => {
-        setMatchPwd(pwd === confirmPwd)
-    }, [pwd, confirmPwd])
+      alert("success");
+    } catch (err) {
+      console.log("err", err);
 
+      if (!err?.response) {
+        setErrMsg("No Server Response");
+      } else if (err.response?.status === 409) {
+        setErrMsg("Username Taken");
+      } else {
+        setErrMsg("Registration Failed");
+      }
+    }
+  };
 
+  return (
+    <>
+      <section className="flex h-screen justify-center pt-20">
+        <div className="container">
+          <div className="flex justify-center">
+            <div className="w-full p-4 lg:w-2/3 xl:w-1/3">
+              <h3 className="mb-10 text-center text-3xl font-medium">
+                Register
+              </h3>
 
-    const handleSubmit = async (e) => {
-
-        e.preventDefault();
-
-        try {
-            const response = await axios.post('/register',
-                JSON.stringify({ user, pwd }),
-                {
-                    headers: { 'Content-Type': 'application/json' },
-                    withCredentials: true
-                }
-            );
-
-
-            setUser('');
-            setPwd('');
-            setConfirmPwd('');
-
-            alert("success")
-
-
-
-        } catch (err) {
-
-            console.log("err", err)
-
-            if (!err?.response) {
-                setErrMsg('No Server Response');
-            } else if (err.response?.status === 409) {
-                setErrMsg('Username Taken');
-            } else {
-                setErrMsg('Registration Failed')
-            }
-
-        }
-    };
-
-
-
-    return (
-        <>
-            <section className="signup p-5">
-
-                <div className="container">
-
-                    <div className="row justify-content-center">
-                        <div className="col-md-4">
-
-                            <h3 className="text-center my-5">Register</h3>
-
-                            {err !== '' &&
-                                <div class="alert alert-danger" role="alert">
-                                    {err}
-                                </div>}
-
-
-                            <form onSubmit={handleSubmit}>
-
-                                <div className="mb-3">
-                                    <label htmlFor="username" className="form-label">Username</label>
-                                    <input
-                                        required
-                                        value={user}
-                                        onChange={(e) => setUser(e.target.value)}
-                                        type="text" className="form-control" id="username" placeholder="username" />
-                                </div>
-                                <div className="mb-3">
-                                    <label htmlFor="password" className="form-label">Password</label>
-                                    <input
-                                        required
-                                        value={pwd}
-                                        onChange={(e) => setPwd(e.target.value)}
-                                        type="password" className="form-control" id="password" placeholder="password" />
-                                </div>
-                                <div className="mb-3">
-                                    <label htmlFor="psdConfirm" className="form-label">Confirm Password</label>
-                                    <input
-                                        required
-                                        value={confirmPwd}
-                                        onChange={(e) => setConfirmPwd(e.target.value)}
-                                        type="password" className="form-control" id="psdConfirm" placeholder="confirm password" />
-                                </div>
-
-                                <div className='d-flex justify-content-between'>
-                                    <button
-                                        disabled={!matchPwd ? true : false}
-                                        className="btn btn-primary">Sign Up</button>
-                                   <p>Already have an account  <Link to={"/login"}>login</Link></p>
-                                </div>
-
-                            </form>
-
-
-                        </div>
-                    </div>
+              {err !== "" && (
+                <div
+                  class="mb-4 rounded-lg bg-red-50 p-4 text-sm text-red-800 "
+                  role="alert"
+                >
+                  <span class="font-medium">Danger alert!</span> {err}
                 </div>
-            </section>
+              )}
 
+              <form onSubmit={handleSubmit}>
+                <div className="mb-4 flex flex-col gap-2">
+                  <label
+                    htmlFor="username"
+                    className="mb-2 block text-sm font-medium text-gray-900"
+                  >
+                    Username
+                  </label>
+                  <input
+                    required
+                    value={user}
+                    onChange={(e) => setUser(e.target.value)}
+                    type="text"
+                    className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-main focus:outline-none"
+                    id="username"
+                    placeholder="username"
+                  />
+                </div>
+                <div className="mb-4 flex flex-col gap-2">
+                  <label
+                    htmlFor="password"
+                    className="mb-2 block text-sm font-medium text-gray-900"
+                  >
+                    Password
+                  </label>
+                  <input
+                    required
+                    value={pwd}
+                    onChange={(e) => setPwd(e.target.value)}
+                    type="password"
+                    className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-main focus:outline-none"
+                    id="password"
+                    placeholder="password"
+                  />
+                </div>
+                <div className="mb-4 flex flex-col gap-2">
+                  <label
+                    htmlFor="psdConfirm"
+                    className="mb-2 block text-sm font-medium text-gray-900"
+                  >
+                    Confirm Password
+                  </label>
+                  <input
+                    required
+                    value={confirmPwd}
+                    onChange={(e) => setConfirmPwd(e.target.value)}
+                    type="password"
+                    className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-main focus:outline-none"
+                    id="psdConfirm"
+                    placeholder="confirm password"
+                  />
+                </div>
 
-        </>
-    )
-}
+                <button
+                disabled={!matchPwd}
+                  className={`block w-full rounded-md  px-4 py-2 text-white transition-all  ${matchPwd ? "bg-main hover:bg-main-700 cursor-pointer " : "cursor-not-allowed bg-gray-400"}`}
+                >
+                  Sign Up
+                </button>
+              </form>
+              <p className="mt-5 text-sm">
+                Already have an account
+                <Link className="ml-1 text-blue-500" to={"/login"}>
+                  login
+                </Link>
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </>
+  );
+};
 
-export default SignUp
+export default SignUp;

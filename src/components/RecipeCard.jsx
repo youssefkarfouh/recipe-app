@@ -49,7 +49,6 @@ function RecipeCard({ recipe }) {
             alt={`${recipe.strMeal}`}
             title={`${recipe.strMeal}`}
           />
-
         </Link>
       </div>
       <div className="flex items-center justify-between py-6 px-4">

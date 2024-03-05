@@ -1,15 +1,15 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 
 import { IoClose } from "react-icons/io5";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { IoRemoveCircleSharp } from "react-icons/io5";
 import useClickOutside from "../hooks/useClickOutside";
 import { useAppContext } from "../context/SharedData";
 import { IconContext } from "react-icons";
 
 const Aside = () => {
-  const { savedRecipes, setSavedRecipes, isOpened, setIsOpened } =
-    useAppContext();
+  const { savedRecipes, setSavedRecipes, isOpened, setIsOpened } = useAppContext();
+  const {cat} = useParams()
 
   // styling
   const asideStyle = `fixed text-base right-0 bg-white top-0 w-[300px] min-h-screen overflow-auto p-4 z-50 shadow-[0_0_13px_-7px_black] transition  ${isOpened ? "translate-x-0" : "translate-x-full"}`;
@@ -22,6 +22,7 @@ const Aside = () => {
     }
     getSavedRecipes();
   }, []);
+
 
   const ref = useClickOutside(() => {
     setIsOpened(false);
@@ -36,8 +37,8 @@ const Aside = () => {
   const savedData = savedRecipes.map((ele, index) => {
     return (
       <li key={index} className="relative basis-16">
-        {/* /category/Pork/52885 */}
-        <Link to={`/category/${ele.idMeal}`}>
+        
+        <Link to={`/category/${cat}/${ele.idMeal}`}>
           <img
             className="block rounded-full"
             src={ele.strMealThumb}

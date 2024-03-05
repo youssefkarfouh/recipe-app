@@ -5,11 +5,10 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-
     extend: {
       container: {
         padding: '2rem',
-        center: true
+        center: true,
       },
       colors: {
         'main': {
@@ -24,6 +23,7 @@ export default {
           '800': '#991b1b',
           '900': '#7f1d1d',
           '950': '#450a0a',
+
         }
       }
     },

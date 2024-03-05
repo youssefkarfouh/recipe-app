@@ -12,10 +12,8 @@ import { IconContext } from "react-icons";
 
 function Header() {
   const { savedRecipes, setIsOpened } = useAppContext();
-  const { auth, persist } = useAuth();
   const logout = useLogout();
   const navigate = useNavigate();
-  const location = useLocation();
 
   const [formData, setFormData] = useState("");
   const [searchList, setSearchList] = useState([]);

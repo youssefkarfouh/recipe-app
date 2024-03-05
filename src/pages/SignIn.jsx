@@ -1,126 +1,148 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect } from "react";
 
-import useAuth from '../hooks/useAuth';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import useAxiosPrivate from '../hooks/usePrivateAxios';
+import useAuth from "../hooks/useAuth";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import useAxiosPrivate from "../hooks/usePrivateAxios";
 
 function SignIn() {
-
   const axiosPrivate = useAxiosPrivate();
 
-  const [err, setErrMsg] = useState('');
-  const [user, setUser] = useState('');
-  const [pwd, setPwd] = useState('');
-
-
+  const [err, setErrMsg] = useState("");
+  const [user, setUser] = useState("");
+  const [pwd, setPwd] = useState("");
 
   const { setAuth, persist, setPersist } = useAuth();
 
   const navigate = useNavigate();
-  const location = useLocation()
-  const from = location.state ? location.state.from.pathname : "/"
-
-
-  useEffect(() => {
-    setErrMsg('')
-  }, [user, pwd])
+  const location = useLocation();
+  const from = location.state ? location.state.from.pathname : "/";
 
   useEffect(() => {
-    localStorage.setItem("persist", persist)
-  }, [persist])
+    setErrMsg("");
+  }, [user, pwd]);
 
-
-
+  useEffect(() => {
+    localStorage.setItem("persist", persist);
+  }, [persist]);
 
   const handleSubmit = async (e) => {
-
     e.preventDefault();
 
     try {
-      const response = await axiosPrivate.post('/auth', JSON.stringify({ user, pwd }),
+      const response = await axiosPrivate.post(
+        "/auth",
+        JSON.stringify({ user, pwd }),
         {
-          headers: { 'Content-Type': 'application/json' },
-          withCredentials: true
-        }
+          headers: { "Content-Type": "application/json" },
+          withCredentials: true,
+        },
       );
-
 
       const accessToken = response?.data?.accessToken;
       const roles = response?.data?.roles;
       setAuth({ user, pwd, roles, accessToken });
-      setUser('');
-      setPwd('');
+      setUser("");
+      setPwd("");
 
-      navigate(from, { replace: true })
-
-
+      navigate(from, { replace: true });
     } catch (err) {
-
       if (!err?.response) {
-        setErrMsg('No Server Response');
+        setErrMsg("No Server Response");
       } else if (err.response?.status === 400) {
-        setErrMsg('Missing Username or Password');
+        setErrMsg("Missing Username or Password");
       } else if (err.response?.status === 401) {
-        setErrMsg('Unauthorized');
+        setErrMsg("Unauthorized");
       } else {
-        setErrMsg('Login Failed');
+        setErrMsg("Login Failed");
       }
     }
   };
 
-
-
   return (
-
-    
-    <section className='login p-5'>
-    isPersist in sign in : { persist === true ? 'yes' : 'no'}
-
+    <section className="flex h-screen justify-center pt-20">
       <div className="container">
-        <div className="row justify-content-center">
-          <div className="col-md-4">
+        <div className="flex justify-center">
+          <div className="w-full p-4 lg:w-2/3 xl:w-1/3">
+            <h3 className="mb-10 text-center text-3xl font-medium">Sign in</h3>
 
-            <h3 className="text-center my-5">Sign in</h3>
-
-            {err !== '' &&
-              <div className="alert alert-danger" role="alert">{err}</div>
-            }
+            {err !== "" && (
+              <div
+                class="mb-4 rounded-lg bg-red-50 p-4 text-sm text-red-800 "
+                role="alert"
+              >
+                <span class="font-medium">Danger alert!</span> {err}
+              </div>
+            )}
 
             <form onSubmit={handleSubmit}>
-              <div className="mb-3">
-                <label htmlFor="username" className="form-label">Username</label>
+              <div className="mb-4 flex flex-col gap-2">
+                <label
+                  htmlFor="username"
+                  className="mb-2 block text-sm font-medium text-gray-900"
+                >
+                  Username
+                </label>
                 <input
                   value={user}
                   required
                   onChange={(e) => setUser(e.target.value)}
-                  type="text" className="form-control" id="username" placeholder="username" />
+                  type="text"
+                  className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-main focus:outline-none"
+                  id="username"
+                  placeholder="username"
+                />
               </div>
-              <div className="mb-3">
-                <label htmlFor="password" className="form-label">Password</label>
+
+              <div className="mb-4 flex flex-col gap-2">
+                <label
+                  htmlFor="password"
+                  className="mb-2 block text-sm font-medium text-gray-900"
+                >
+                  Password
+                </label>
                 <input
                   value={pwd}
                   required
                   onChange={(e) => setPwd(e.target.value)}
-                  type="password" className="form-control" id="password" placeholder="password" />
+                  type="password"
+                  className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-main focus:outline-none"
+                  id="password"
+                  placeholder="password"
+                />
               </div>
-              <div className="form-check">
-                <input className="form-check-input" type="checkbox" value={persist}  id="persist" onChange={(e) => setPersist(e.target.checked)} />
+              <div className="mb-4 flex gap-2">
+                <input
+                  className="form-check-input"
+                  type="checkbox"
+                  value={persist}
+                  id="persist"
+                  onChange={(e) => setPersist(e.target.checked)}
+                />
                 <label className="form-check-label" htmlFor="persist">
-                  Checked checkbox
+                  Remember me
                 </label>
               </div>
+
+
               <button
-                className="btn btn-primary">Login
-              </button>
+                disabled={user == '' || pwd == ''}
+                  className={`block w-full rounded-md  px-4 py-2 text-white transition-all  ${user !== '' && pwd !== '' ? "bg-main hover:bg-main-700 cursor-pointer " : "cursor-not-allowed bg-gray-400"}`}
+                >
+                  Login
+                </button>
             </form>
 
-            <p className='mt-3'>You don`t have an account <Link to={"/register"}>Register</Link></p>
-
+            <p className="mt-5 text-sm">
+              You don`t have an account
+              <Link className="ml-1 text-blue-500" to={"/register"}>
+                Register
+              </Link>
+            </p>
           </div>
         </div>
       </div>
     </section>
-  )
+  );
 }
 
-export default SignIn
+export default SignIn;
