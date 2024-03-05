@@ -1,23 +1,51 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import logo from "../assets/images/logo.png";
-import { IoHeart } from "react-icons/io5";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { IoHeart, IoLogOutOutline } from "react-icons/io5";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import useClickOutside from "../hooks/useClickOutside";
-import useAuth from "../hooks/useAuth";
 import { useAppContext } from "../context/SharedData";
-import { IoPerson } from "react-icons/io5";
 import useLogout from "../hooks/useLogout";
 import { IconContext } from "react-icons";
+import { UserOutlined } from "@ant-design/icons";
+import { Dropdown, Space } from "antd";
+import useAuth from "../hooks/useAuth";
 
 function Header() {
   const { savedRecipes, setIsOpened } = useAppContext();
+  const { user } = useAuth();
   const logout = useLogout();
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState("");
   const [searchList, setSearchList] = useState([]);
   const [show, setShow] = useState(false);
+
+  // menu items
+  const items = [
+    {
+      key: "1",
+      label: (
+        <a rel="noopener noreferrer">
+          Hello {user}
+        </a>
+      ),
+    },
+    {
+      key: "2",
+      label: (
+        <a  onClick={handleLogout} rel="noopener noreferrer">
+          Logout
+        </a>
+      ),
+      icon: <IoLogOutOutline />,
+    },
+  ];
+
+  useEffect(() => {
+
+    console.log("user logged" , user)
+  }, []);
 
   const ref = useClickOutside(() => {
     setShow(false);
@@ -56,13 +84,13 @@ function Header() {
     axios
       .get(`https://www.themealdb.com/api/json/v1/1/search.php?s=${value}`)
       .then((res) => {
-        console.log("res" , res)
+        console.log("res", res);
         setSearchList(res.data.meals);
         setShow(true);
       });
   }
   function handlSearch(e) {
-    console.log("submitted")
+    console.log("submitted");
     if (e) {
       e.preventDefault();
     }
@@ -114,7 +142,18 @@ function Header() {
                 </span>
               </button>
               <div className="logged-user">
-                <IoPerson />
+                <Dropdown
+                  menu={{
+                    items,
+                  }}
+                >
+                  <a onClick={(e) => e.preventDefault()}>
+                    <Space>
+                      Hover me
+                      <UserOutlined />
+                    </Space>
+                  </a>
+                </Dropdown>
               </div>
             </div>
           </div>
