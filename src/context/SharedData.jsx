@@ -3,13 +3,10 @@ import React, { createContext, useContext, useState } from 'react';
 const AppContext = createContext();
 
 export const SharedData = ({ children }) => {
-	const [ recipes, setRecipes ] = useState([]);
 	const [ savedRecipes , setSavedRecipes] = useState([]);
 	const [ isOpened, setIsOpened ] = useState(false);
 
 	const contextValue = {
-		recipes,
-		setRecipes,
 		savedRecipes,
 		setSavedRecipes,
 		isOpened,

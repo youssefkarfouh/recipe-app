@@ -7,7 +7,7 @@ import axios from '../api/axios';
 function Category() {
 
     const { name } = useParams();
-    const { recipes, setRecipes } = useAppContext();
+    const [ recipes, setRecipes ] = useState([]);
 
 
     useEffect(() => {

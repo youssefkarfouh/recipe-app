@@ -5,8 +5,6 @@ import Aside from './Aside';
 function RootLayout() {
 
 
-
-
   return (
     <div className='App'>
 

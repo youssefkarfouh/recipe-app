@@ -5,7 +5,6 @@ import ImageFallback from "./ImageFallback";
 
 
 function Categories() {
-  const [selectedCateg, setSelectedCateg] = useState("");
   const [categories, setCategories] = useState([]);
 
   const navigate = useNavigate();
@@ -24,18 +23,16 @@ function Categories() {
 
   function handClick(strCategory) {
     navigate(`/category/${strCategory}`);
-
-    setSelectedCateg(strCategory);
+  
   }
-
 
 
   const listCategories = categories?.map((cat) => (
     <div
       key={cat.idCategory}
-      className={`text-center cursor-pointer hover:text-main font-bold ${cat.strCategory === selectedCateg ? "active" : ""}`}
+      className={`text-center cursor-pointer hover:text-main font-bold`}
       onClick={() => handClick(cat.strCategory)}
-    >
+    > 
       <ImageFallback
         src={cat.strCategoryThumb}
         alt={cat.strCategory}

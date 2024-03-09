@@ -13,8 +13,8 @@ function RequireAuth({ allowedRoles }) {
             ? <Outlet />
           
             : auth?.accessToken //changed from user to accessToken to persist login after refresh
-                ? <Navigate to="/unauthorized" state={{ from: location }} replace />
-                : <Navigate to="/login" state={{ from: location }} replace />
+                ? <Navigate to="/unauthorized" state={{ from: location }} replace={true} />
+                : <Navigate to="/login" state={{ from: location }} replace={true} />
     )
 
     

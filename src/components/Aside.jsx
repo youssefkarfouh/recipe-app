@@ -11,9 +11,6 @@ const Aside = () => {
   const { savedRecipes, setSavedRecipes, isOpened, setIsOpened } = useAppContext();
   const {cat} = useParams()
 
-  // styling
-  const asideStyle = `fixed text-base right-0 bg-white top-0 w-[300px] min-h-screen overflow-auto p-4 z-50 shadow-[0_0_13px_-7px_black] transition  ${isOpened ? "translate-x-0" : "translate-x-full"}`;
-
   useEffect(() => {
     function getSavedRecipes() {
       const data = JSON.parse(localStorage.getItem("recipes"));
@@ -62,7 +59,7 @@ const Aside = () => {
           "text-slate-950 hover:text-main cursor-pointer transition-colors",
       }}
     >
-      <aside ref={ref} className={asideStyle}>
+      <aside ref={ref} className={`fixed text-base right-0 bg-white top-0 w-[300px] min-h-screen overflow-auto p-4 z-50 shadow-[0_0_13px_-7px_black] transition  ${isOpened ? "translate-x-0" : "translate-x-full"}`}>
         <span
           className="absolute right-4 top-4"
           onClick={() => setIsOpened(false)}

@@ -1,19 +1,22 @@
 import React, { useEffect, useState } from "react";
 import logo from "../assets/images/logo.png";
-import { IoHeart, IoLogOutOutline } from "react-icons/io5";
+import {
+  IoHeartOutline,
+  IoLogOutOutline,
+  IoPersonOutline,
+} from "react-icons/io5";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import useClickOutside from "../hooks/useClickOutside";
 import { useAppContext } from "../context/SharedData";
 import useLogout from "../hooks/useLogout";
 import { IconContext } from "react-icons";
-import { UserOutlined } from "@ant-design/icons";
-import { Dropdown, Space } from "antd";
+import { Dropdown } from "antd";
 import useAuth from "../hooks/useAuth";
 
 function Header() {
   const { savedRecipes, setIsOpened } = useAppContext();
-  const { user } = useAuth();
+  const { auth } = useAuth();
   const logout = useLogout();
   const navigate = useNavigate();
 
@@ -25,26 +28,18 @@ function Header() {
   const items = [
     {
       key: "1",
-      label: (
-        <a rel="noopener noreferrer">
-          Hello {user}
-        </a>
-      ),
+      label: <span>Hello {auth.user}</span>,
     },
     {
       key: "2",
-      label: (
-        <a  onClick={handleLogout} rel="noopener noreferrer">
-          Logout
-        </a>
-      ),
+      label: <Link onClick={handleLogout}>Logout</Link>,
       icon: <IoLogOutOutline />,
+      danger: true,
     },
   ];
 
   useEffect(() => {
-
-    console.log("user logged" , user)
+    console.log("user logged", auth);
   }, []);
 
   const ref = useClickOutside(() => {
@@ -99,11 +94,11 @@ function Header() {
 
   async function handleLogout() {
     await logout();
-    navigate("/login");
+    navigate("/login", { replace: true });
   }
 
   return (
-    <IconContext.Provider value={{ size: "25px" }}>
+    <IconContext.Provider value={{ size: "25px", className: "cursor-pointer" }}>
       <header className="fixed top-0 z-10 h-20 w-full bg-white">
         <div className="container">
           <div className="flex items-center justify-between py-4">
@@ -132,27 +127,15 @@ function Header() {
               </ul>
             </div>
             <div className="flex gap-8">
-              <button
-                className="relative cursor-pointer rounded-full border-none bg-none"
-                onClick={() => setIsOpened(true)}
-              >
-                <IoHeart />
-                <span className="bg-700 absolute -right-2 -top-2 inline-block size-4 rounded-full bg-main-600 text-xs  text-main-50">
+              <div className="relative">
+                <IoHeartOutline onClick={() => setIsOpened(true)} />
+                <span className="absolute -right-2 -top-2 inline-block size-4 rounded-full bg-main-600 text-center text-xs  text-main-50">
                   {savedRecipes.length}
                 </span>
-              </button>
-              <div className="logged-user">
-                <Dropdown
-                  menu={{
-                    items,
-                  }}
-                >
-                  <a onClick={(e) => e.preventDefault()}>
-                    <Space>
-                      Hover me
-                      <UserOutlined />
-                    </Space>
-                  </a>
+              </div>
+              <div>
+                <Dropdown menu={{ items }}>
+                  <IoPersonOutline />
                 </Dropdown>
               </div>
             </div>

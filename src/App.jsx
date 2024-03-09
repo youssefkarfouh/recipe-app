@@ -33,7 +33,6 @@ function App() {
         { /* we want to protect these routes */}
 
         <Route element={<PersistLogin />}>
-
           <Route element={<RequireAuth allowedRoles={[ROLES.Admin, ROLES.User]} />}>
             <Route path="/" element={<RootLayout />}>
               <Route index element={<Home />} />
@@ -46,7 +45,6 @@ function App() {
             <Route path="backoffice" element={<BackOffice />} />
           </Route>
         </Route>
-
 
         { /* catch all */}
         <Route path="*" element={<NotFound />} />

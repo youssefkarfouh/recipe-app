@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 import useAuth from "../hooks/useAuth";
 import { Link, useLocation, useNavigate } from "react-router-dom";
@@ -6,6 +6,7 @@ import useAxiosPrivate from "../hooks/usePrivateAxios";
 
 function SignIn() {
   const axiosPrivate = useAxiosPrivate();
+  const inputRef = useRef(null);
 
   const [err, setErrMsg] = useState("");
   const [user, setUser] = useState("");
@@ -25,6 +26,9 @@ function SignIn() {
     localStorage.setItem("persist", persist);
   }, [persist]);
 
+  useEffect(()=>{
+    inputRef.current.focus();
+  } , [])
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -70,7 +74,7 @@ function SignIn() {
                 class="mb-4 rounded-lg bg-red-50 p-4 text-sm text-red-800 "
                 role="alert"
               >
-                <span class="font-medium">Danger alert!</span> {err}
+                   {err}
               </div>
             )}
 
@@ -83,6 +87,7 @@ function SignIn() {
                   Username
                 </label>
                 <input
+                ref={inputRef}
                   value={user}
                   required
                   onChange={(e) => setUser(e.target.value)}
