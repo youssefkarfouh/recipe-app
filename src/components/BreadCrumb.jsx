@@ -1,12 +1,7 @@
-import React from 'react'
+import React from "react";
 
 function BreadCrumb() {
-  return (
-    <div className='breadcrumb-menu'>
-        
-
-    </div>
-  )
+  return <div className="breadcrumb-menu"></div>;
 }
 
-export default BreadCrumb
+export default BreadCrumb;

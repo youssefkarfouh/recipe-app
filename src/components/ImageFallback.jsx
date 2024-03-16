@@ -5,7 +5,7 @@ function ImageFallback({ src, ...rest }) {
   const [imageSrc, setImageSrc] = useState(src);
 
   useEffect(() => {
-    !Boolean(src) &&  handleImageError()
+    !Boolean(src) && handleImageError();
   }, []);
 
   const handleImageError = () => {

@@ -1,19 +1,10 @@
 import React, { useEffect } from "react";
 import Categories from "../components/Categories";
 
-
-
 function Home() {
+  useEffect(() => {}, []);
 
-
-  useEffect(() => {
-
-  }, []);
-
-
-  return (
-    <Categories />  
-  );
+  return <Categories />;
 }
 
 export default Home;

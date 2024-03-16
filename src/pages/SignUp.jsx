@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import axios from "../api/axios";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import DynamicInput from "../components/DynamicInput";
 
 const SignUp = () => {
   const [err, setErrMsg] = useState("");
@@ -8,14 +9,19 @@ const SignUp = () => {
   const [pwd, setPwd] = useState("");
   const [confirmPwd, setConfirmPwd] = useState("");
   const [matchPwd, setMatchPwd] = useState(false);
+  const inputRef = useRef(null);
 
   useEffect(() => {
     setErrMsg("");
   }, [user, pwd, confirmPwd]);
 
   useEffect(() => {
-    setMatchPwd(pwd === confirmPwd && pwd!== '' && confirmPwd!== '');
+    setMatchPwd(pwd === confirmPwd && pwd !== "" && confirmPwd !== "");
   }, [pwd, confirmPwd]);
+
+  useEffect(() => {
+    inputRef.current.focus();
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -76,12 +82,13 @@ const SignUp = () => {
                   >
                     Username
                   </label>
-                  <input
-                    required
-                    value={user}
-                    onChange={(e) => setUser(e.target.value)}
+
+                  <DynamicInput
+                    isRequired={true}
+                    inputValue={user}
+                    setValue={setUser}
+                    inputRef={inputRef}
                     type="text"
-                    className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-main focus:outline-none"
                     id="username"
                     placeholder="username"
                   />
@@ -93,12 +100,11 @@ const SignUp = () => {
                   >
                     Password
                   </label>
-                  <input
-                    required
-                    value={pwd}
-                    onChange={(e) => setPwd(e.target.value)}
+                  <DynamicInput
+                    isRequired={true}
+                    inputValue={pwd}
+                    setValue={setPwd}
                     type="password"
-                    className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-main focus:outline-none"
                     id="password"
                     placeholder="password"
                   />
@@ -110,20 +116,19 @@ const SignUp = () => {
                   >
                     Confirm Password
                   </label>
-                  <input
-                    required
-                    value={confirmPwd}
-                    onChange={(e) => setConfirmPwd(e.target.value)}
+                  <DynamicInput
+                    isRequired={true}
+                    inputValue={confirmPwd}
+                    setValue={setConfirmPwd}
                     type="password"
-                    className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-main focus:outline-none"
                     id="psdConfirm"
                     placeholder="confirm password"
                   />
                 </div>
 
                 <button
-                disabled={!matchPwd}
-                  className={`block w-full rounded-md  px-4 py-2 text-white transition-all  ${matchPwd ? "bg-main hover:bg-main-700 cursor-pointer " : "cursor-not-allowed bg-gray-400"}`}
+                  disabled={!matchPwd}
+                  className={`block w-full rounded-md  px-4 py-2 text-white transition-all  ${matchPwd ? "cursor-pointer bg-main hover:bg-main-700 " : "cursor-not-allowed bg-gray-400"}`}
                 >
                   Sign Up
                 </button>

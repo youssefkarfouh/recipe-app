@@ -13,6 +13,7 @@ import useLogout from "../hooks/useLogout";
 import { IconContext } from "react-icons";
 import { Dropdown } from "antd";
 import useAuth from "../hooks/useAuth";
+import DynamicInput from "../components/DynamicInput";
 
 function Header() {
   const { savedRecipes, setIsOpened } = useAppContext();
@@ -109,14 +110,14 @@ function Header() {
             </div>
             <div className="relative basis-[300px]">
               <form id="form" onSubmit={handlSearch}>
-                <input
-                  className="width-full block h-[2rem] w-full rounded-2xl border bg-slate-100  px-3 py-1 text-sm text-black outline-none"
+                <DynamicInput
                   type="input"
                   id="searchInput"
                   name="search"
                   placeholder="search..."
-                  onChange={handlChange}
-                  value={formData}
+                  setValue={handlChange}
+                  inputValue={formData}
+                  isRequired={false}
                 />
               </form>
               <ul

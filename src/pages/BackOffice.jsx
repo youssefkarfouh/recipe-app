@@ -1,9 +1,7 @@
-import React from 'react'
+import React from "react";
 
 function BackOffice() {
-  return (
-    <div>BackOffice</div>
-  )
+  return <div>BackOffice</div>;
 }
 
-export default BackOffice
+export default BackOffice;

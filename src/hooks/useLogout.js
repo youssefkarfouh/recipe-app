@@ -2,25 +2,21 @@ import axios from "../api/axios";
 import useAuth from "./useAuth";
 
 const useLogout = () => {
+  const { setAuth } = useAuth();
 
-    const { setAuth } = useAuth();
-
-    const logout = async () => {
-
-        setAuth({});
-        localStorage.clear()
-        try {
-            const response = await axios('/logout', {
-                withCredentials: true
-            })
-        }
-        catch (err) {
-            console.error(err);
-        }
+  const logout = async () => {
+    setAuth({});
+    localStorage.clear();
+    try {
+      const response = await axios("/logout", {
+        withCredentials: true,
+      });
+    } catch (err) {
+      console.error(err);
     }
+  };
 
-    return logout;
-
-}
+  return logout;
+};
 
 export default useLogout;

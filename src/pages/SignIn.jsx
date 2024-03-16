@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef } from "react";
-
 import useAuth from "../hooks/useAuth";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import useAxiosPrivate from "../hooks/usePrivateAxios";
+import DynamicInput from "../components/DynamicInput";
 
 function SignIn() {
   const axiosPrivate = useAxiosPrivate();
@@ -26,9 +26,9 @@ function SignIn() {
     localStorage.setItem("persist", persist);
   }, [persist]);
 
-  useEffect(()=>{
+  useEffect(() => {
     inputRef.current.focus();
-  } , [])
+  }, []);
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -42,8 +42,8 @@ function SignIn() {
         },
       );
 
-      const accessToken = response?.data?.accessToken;
-      const roles = response?.data?.roles;
+      const { accessToken, roles } = response?.data;
+
       setAuth({ user, pwd, roles, accessToken });
       setUser("");
       setPwd("");
@@ -74,7 +74,7 @@ function SignIn() {
                 class="mb-4 rounded-lg bg-red-50 p-4 text-sm text-red-800 "
                 role="alert"
               >
-                   {err}
+                {err}
               </div>
             )}
 
@@ -86,13 +86,12 @@ function SignIn() {
                 >
                   Username
                 </label>
-                <input
-                ref={inputRef}
-                  value={user}
-                  required
-                  onChange={(e) => setUser(e.target.value)}
+                <DynamicInput
+                  isRequired={true}
+                  inputValue={user}
+                  setValue={setUser}
+                  inputRef={inputRef}
                   type="text"
-                  className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-main focus:outline-none"
                   id="username"
                   placeholder="username"
                 />
@@ -105,12 +104,11 @@ function SignIn() {
                 >
                   Password
                 </label>
-                <input
-                  value={pwd}
-                  required
-                  onChange={(e) => setPwd(e.target.value)}
+                <DynamicInput
+                  isRequired={true}
+                  inputValue={pwd}
+                  setValue={setPwd}
                   type="password"
-                  className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-main focus:outline-none"
                   id="password"
                   placeholder="password"
                 />
@@ -128,13 +126,12 @@ function SignIn() {
                 </label>
               </div>
 
-
               <button
-                disabled={user == '' || pwd == ''}
-                  className={`block w-full rounded-md  px-4 py-2 text-white transition-all  ${user !== '' && pwd !== '' ? "bg-main hover:bg-main-700 cursor-pointer " : "cursor-not-allowed bg-gray-400"}`}
-                >
-                  Login
-                </button>
+                disabled={user == "" || pwd == ""}
+                className={`block w-full rounded-md  px-4 py-2 text-white transition-all  ${user !== "" && pwd !== "" ? "cursor-pointer bg-main hover:bg-main-700 " : "cursor-not-allowed bg-gray-400"}`}
+              >
+                Login
+              </button>
             </form>
 
             <p className="mt-5 text-sm">

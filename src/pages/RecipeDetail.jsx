@@ -16,8 +16,8 @@ function RecipeDetail() {
     axios
       .get(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`)
       .then((res) => {
-        console.log("res" , res);
-        console.log("id" , id)
+        console.log("res", res);
+        console.log("id", id);
         setRecipeDetail(res.data.meals[0]);
         setIsLoading(false);
       });
@@ -60,8 +60,6 @@ function RecipeDetail() {
       </>
     );
   });
-
-
 
   if (isLoading) {
     return <div className="loading">Loading ...</div>;

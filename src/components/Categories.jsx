@@ -3,7 +3,6 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "../api/axios";
 import ImageFallback from "./ImageFallback";
 
-
 function Categories() {
   const [categories, setCategories] = useState([]);
 
@@ -23,22 +22,20 @@ function Categories() {
 
   function handClick(strCategory) {
     navigate(`/category/${strCategory}`);
-  
   }
-
 
   const listCategories = categories?.map((cat) => (
     <div
       key={cat.idCategory}
-      className={`text-center cursor-pointer hover:text-main font-bold`}
+      className={`cursor-pointer text-center font-bold hover:text-main`}
       onClick={() => handClick(cat.strCategory)}
-    > 
+    >
       <ImageFallback
         src={cat.strCategoryThumb}
         alt={cat.strCategory}
         className="mx-auto block size-40 rounded-full object-cover shadow-[0_5px_19px_-10px_#0000006e]"
       />
-      <span className="block text-center mt-4">{cat.strCategory}</span>
+      <span className="mt-4 block text-center">{cat.strCategory}</span>
     </div>
   ));
 
