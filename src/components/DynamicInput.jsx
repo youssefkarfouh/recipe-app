@@ -1,19 +1,16 @@
-import React, { useEffect } from "react";
+import React from "react";
 
 function DynamicInput({
   inputValue,
-  setValue,
   isRequired,
   inputRef,
+  change,
   ...restprops
 }) {
-
-
-
   return (
     <input
       value={inputValue}
-      onChange={(e)=>setValue(e.target.value)}
+      onChange={change}
       {...restprops}
       ref={inputRef}
       required={isRequired}

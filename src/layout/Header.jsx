@@ -14,6 +14,7 @@ import { IconContext } from "react-icons";
 import { Dropdown } from "antd";
 import useAuth from "../hooks/useAuth";
 import DynamicInput from "../components/DynamicInput";
+import useDebounce from "../hooks/useDebounce";
 
 function Header() {
   const { savedRecipes, setIsOpened } = useAppContext();
@@ -21,9 +22,11 @@ function Header() {
   const logout = useLogout();
   const navigate = useNavigate();
 
-  const [formData, setFormData] = useState("");
+  const [formData, setFormData] = useState(null);
   const [searchList, setSearchList] = useState([]);
   const [show, setShow] = useState(false);
+
+  const debouncedSearchValue = useDebounce(formData, 1000);
 
   // menu items
   const items = [
@@ -40,8 +43,9 @@ function Header() {
   ];
 
   useEffect(() => {
-    console.log("user logged", auth);
-  }, []);
+    // check if debouncedSearchValue not falsy value 
+    Boolean(debouncedSearchValue)  && getResults(debouncedSearchValue);
+  }, [debouncedSearchValue]);
 
   const ref = useClickOutside(() => {
     setShow(false);
@@ -73,17 +77,7 @@ function Header() {
   }
   function handlChange(e) {
     const value = e.target.value;
-
-    setSearchList([]);
     setFormData(value);
-
-    axios
-      .get(`https://www.themealdb.com/api/json/v1/1/search.php?s=${value}`)
-      .then((res) => {
-        console.log("res", res);
-        setSearchList(res.data.meals);
-        setShow(true);
-      });
   }
   function handlSearch(e) {
     console.log("submitted");
@@ -92,7 +86,15 @@ function Header() {
     }
     // setRecipes(searchList);
   }
-
+  function getResults(searchTerm) {
+    axios
+      .get(`https://www.themealdb.com/api/json/v1/1/search.php?s=${searchTerm}`)
+      .then((res) => {
+        console.log("res", res);
+        setSearchList(res.data.meals);
+        setShow(true);
+      });
+  }
   async function handleLogout() {
     await logout();
     navigate("/login", { replace: true });
@@ -115,7 +117,7 @@ function Header() {
                   id="searchInput"
                   name="search"
                   placeholder="search..."
-                  setValue={handlChange}
+                  change={handlChange}
                   inputValue={formData}
                   isRequired={false}
                 />

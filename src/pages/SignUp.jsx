@@ -86,7 +86,7 @@ const SignUp = () => {
                   <DynamicInput
                     isRequired={true}
                     inputValue={user}
-                    setValue={setUser}
+                    change={(e) => setUser(e.target.value)}
                     inputRef={inputRef}
                     type="text"
                     id="username"
@@ -103,7 +103,7 @@ const SignUp = () => {
                   <DynamicInput
                     isRequired={true}
                     inputValue={pwd}
-                    setValue={setPwd}
+                    change={(e) => setPwd(e.target.value)}
                     type="password"
                     id="password"
                     placeholder="password"
@@ -119,7 +119,7 @@ const SignUp = () => {
                   <DynamicInput
                     isRequired={true}
                     inputValue={confirmPwd}
-                    setValue={setConfirmPwd}
+                    change={(e) => setConfirmPwd(e.target.value)}
                     type="password"
                     id="psdConfirm"
                     placeholder="confirm password"

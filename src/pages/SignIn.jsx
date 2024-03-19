@@ -62,6 +62,7 @@ function SignIn() {
     }
   };
 
+
   return (
     <section className="flex h-screen justify-center pt-20">
       <div className="container">
@@ -89,7 +90,7 @@ function SignIn() {
                 <DynamicInput
                   isRequired={true}
                   inputValue={user}
-                  setValue={setUser}
+                  change={(e)=>setUser(e.target.value)}
                   inputRef={inputRef}
                   type="text"
                   id="username"
@@ -107,7 +108,7 @@ function SignIn() {
                 <DynamicInput
                   isRequired={true}
                   inputValue={pwd}
-                  setValue={setPwd}
+                  change={(e)=>setPwd(e.target.value)}
                   type="password"
                   id="password"
                   placeholder="password"
