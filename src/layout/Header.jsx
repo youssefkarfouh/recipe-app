@@ -4,9 +4,14 @@ import {
   IoHeartOutline,
   IoLogOutOutline,
   IoPersonOutline,
+  IoLaptopOutline,
+  IoPhonePortraitOutline,
+  IoTabletPortraitOutline,
+  IoMoonOutline,
+  IoSunnyOutline,
 } from "react-icons/io5";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
+import axios from "../api/axios";
 import useClickOutside from "../hooks/useClickOutside";
 import { useAppContext } from "../context/SharedData";
 import useLogout from "../hooks/useLogout";
@@ -15,15 +20,21 @@ import { Dropdown } from "antd";
 import useAuth from "../hooks/useAuth";
 import DynamicInput from "../components/DynamicInput";
 import useDebounce from "../hooks/useDebounce";
+import useAxios from "../hooks/useAxios";
+import useResize from "../hooks/useResize";
+import useModeToglle from "../hooks/useModeToglle";
 
 function Header() {
   const { savedRecipes, setIsOpened } = useAppContext();
+  const [response, error, loading, axiosFetch] = useAxios();
+  // const windowSize = useResize();
+  const [theme, setTheme] = useModeToglle();
+
   const { auth } = useAuth();
   const logout = useLogout();
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState(null);
-  const [searchList, setSearchList] = useState([]);
   const [show, setShow] = useState(false);
 
   const debouncedSearchValue = useDebounce(formData, 1000);
@@ -41,26 +52,32 @@ function Header() {
       danger: true,
     },
   ];
-
-  useEffect(() => {
-    // check if debouncedSearchValue not falsy value 
-    Boolean(debouncedSearchValue)  && getResults(debouncedSearchValue);
-  }, [debouncedSearchValue]);
-
+  // when click outside
   const ref = useClickOutside(() => {
     setShow(false);
   });
 
+  useEffect(() => {
+    // check if debouncedSearchValue not falsy value
+    Boolean(debouncedSearchValue) && getResults(debouncedSearchValue);
+  }, [debouncedSearchValue]);
+
+  function handleClick(meal) {
+    navigate(`/category/${meal.strCategory}/${meal.idMeal}`);
+    setShow(false);
+  }
+
   let mappedData = [
-    searchList?.map((ele, index) => {
+    response.meals?.map((ele, index) => {
       return (
+        // dangerouslySetInnerHTML={highlite(ele.strMeal, formData)}
         <>
-          <li key={index + 1} className="cursor-pointer p-3">
-            <Link
-              to={`category/${ele.strCategory}/${ele.idMeal}`}
-              dangerouslySetInnerHTML={highlite(ele.strMeal, formData)}
-            ></Link>
-          </li>
+          <li
+            key={index}
+            onClick={() => handleClick(ele)}
+            className="cursor-pointer p-3"
+            dangerouslySetInnerHTML={highlite(ele.strMeal, formData)}
+          ></li>
         </>
       );
     }),
@@ -69,31 +86,32 @@ function Header() {
   // highlite text in the search list
   function highlite(sourceText, strHighlite) {
     let regex = new RegExp(strHighlite, "ig");
-    let res = sourceText.replace(regex, `<span>${strHighlite}</span>`);
+    let res = sourceText.replace(
+      regex,
+      `<span className='font-bold'>${strHighlite}</span>`,
+    );
 
     return {
       __html: res,
     };
   }
   function handlChange(e) {
-    const value = e.target.value;
-    setFormData(value);
+    setFormData(e.target.value);
   }
-  function handlSearch(e) {
-    console.log("submitted");
-    if (e) {
-      e.preventDefault();
-    }
-    // setRecipes(searchList);
-  }
+
   function getResults(searchTerm) {
-    axios
-      .get(`https://www.themealdb.com/api/json/v1/1/search.php?s=${searchTerm}`)
-      .then((res) => {
-        console.log("res", res);
-        setSearchList(res.data.meals);
-        setShow(true);
-      });
+    axiosFetch({
+      axiosInstance: axios,
+      method: "get",
+      url: `/search.php`,
+      requestConfig: {
+        params: {
+          s: searchTerm,
+        },
+      },
+    });
+
+    setShow(true);
   }
   async function handleLogout() {
     await logout();
@@ -102,16 +120,16 @@ function Header() {
 
   return (
     <IconContext.Provider value={{ size: "25px", className: "cursor-pointer" }}>
-      <header className="fixed top-0 z-10 h-20 w-full bg-white">
-        <div className="container">
-          <div className="flex items-center justify-between py-4">
+      <header className="fixed top-0 z-10 w-full bg-white shadow-sm">
+        <div className="px©-2 container md:px-4">
+          <div className="flex flex-wrap items-center justify-center gap-4 py-4 md:justify-between">
             <div className="max-w-48">
               <Link to="/" className="block">
                 <img src={logo} alt="logo" />
               </Link>
             </div>
-            <div className="relative basis-[300px]">
-              <form id="form" onSubmit={handlSearch}>
+            <div className="relative order-2 basis-[300px] md:order-1">
+              <form id="form">
                 <DynamicInput
                   type="input"
                   id="searchInput"
@@ -129,7 +147,7 @@ function Header() {
                 {mappedData}
               </ul>
             </div>
-            <div className="flex gap-8">
+            <div className="order-1   flex gap-8  md:order-2">
               <div className="relative">
                 <IoHeartOutline onClick={() => setIsOpened(true)} />
                 <span className="absolute -right-2 -top-2 inline-block size-4 rounded-full bg-main-600 text-center text-xs  text-main-50">
@@ -141,6 +159,14 @@ function Header() {
                   <IoPersonOutline />
                 </Dropdown>
               </div>
+              <div className="flex gap-2">
+                {theme === "light" && (
+                  <IoMoonOutline onClick={() => setTheme("dark")} />
+                )}
+                {theme === "dark" && (
+                  <IoSunnyOutline onClick={() => setTheme("light")} />
+                )}
+              </div>
             </div>
           </div>
         </div>
@@ -150,3 +176,13 @@ function Header() {
 }
 
 export default Header;
+
+{
+  /* {windowSize < 576 ? (
+                  <IoPhonePortraitOutline />
+                ) : windowSize < 992 ? (
+                  <IoTabletPortraitOutline />
+                ) : (
+                  <IoLaptopOutline />
+                )} */
+}

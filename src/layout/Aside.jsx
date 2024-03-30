@@ -6,19 +6,22 @@ import { IoRemoveCircleSharp } from "react-icons/io5";
 import useClickOutside from "../hooks/useClickOutside";
 import { useAppContext } from "../context/SharedData";
 import { IconContext } from "react-icons";
+import useLocalStorage from "../hooks/useLocalStorage";
 
 const Aside = () => {
   const { savedRecipes, setSavedRecipes, isOpened, setIsOpened } =
     useAppContext();
+
+  const [storedData, setStorageData] = useLocalStorage("recipes", []);
   const { cat } = useParams();
 
   useEffect(() => {
-    function getSavedRecipes() {
-      const data = JSON.parse(localStorage.getItem("recipes"));
+    // set recipes ony if data exist and not empty array 
 
-      if (data) setSavedRecipes(data);
+    if(storedData.length !== 0){
+      setSavedRecipes(storedData);
     }
-    getSavedRecipes();
+
   }, []);
 
   const ref = useClickOutside(() => {
@@ -28,7 +31,7 @@ const Aside = () => {
   function removeMeal(idMeal) {
     const filteredData = savedRecipes.filter((ele) => ele.idMeal !== idMeal);
     setSavedRecipes((prev) => filteredData);
-    localStorage.setItem("recipes", JSON.stringify(filteredData));
+    setStorageData(filteredData);
   }
 
   const savedData = savedRecipes.map((ele, index) => {
@@ -41,12 +44,12 @@ const Aside = () => {
             alt={ele}
           />
         </Link>
-        <span
-          className="absolute right-0 top-0 h-5 w-5 "
+
+        <IoRemoveCircleSharp
           onClick={() => removeMeal(ele.idMeal)}
-        >
-          <IoRemoveCircleSharp title="Remove meal from saved recipes" />
-        </span>
+          className="absolute right-0 top-0 h-5 w-5 "
+          title="Remove meal from saved recipes"
+        />
       </li>
     );
   });
@@ -60,7 +63,7 @@ const Aside = () => {
     >
       <aside
         ref={ref}
-        className={`fixed right-0 top-0 z-50 min-h-screen w-[300px] overflow-auto bg-white p-4 text-base shadow-[0_0_13px_-7px_black] transition  ${isOpened ? "translate-x-0" : "translate-x-full"}`}
+        className={`fixed right-0 top-0 z-50 min-h-screen w-[300px] overflow-auto bg-white p-4 text-base shadow-[0_0_13px_-7px_black] transition  ${isOpened ? "translate-x-0" : "translate-x-[105%]"}`}
       >
         <span
           className="absolute right-4 top-4"

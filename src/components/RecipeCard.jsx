@@ -3,34 +3,32 @@ import { Link, useParams } from "react-router-dom";
 import { IoHeart } from "react-icons/io5";
 import { useAppContext } from "../context/SharedData";
 import ImageFallback from "./ImageFallback";
+import useLocalStorage from "../hooks/useLocalStorage";
 
 function RecipeCard({ recipe }) {
   const { name } = useParams();
 
   const { setSavedRecipes, savedRecipes } = useAppContext();
-
+  const [ , setStorageData] = useLocalStorage("recipes", []);
   function isMealExist(savedData, idMeal) {
     return savedData.some((recipe) => recipe.idMeal === idMeal);
   }
 
   function saveRecipe(recipe) {
     const { strMealThumb, strMeal, idMeal } = recipe;
-    const recipeObj = { strMealThumb, idMeal, strMeal };
+    const recipeObj = { strMealThumb, strMeal , idMeal  };
     const isRecipeExist = isMealExist(savedRecipes, idMeal);
 
     // if exist delete it
     if (isRecipeExist) {
       const filteredData = savedRecipes.filter((ele) => ele.idMeal !== idMeal);
-      setSavedRecipes((prev) => filteredData);
-      localStorage.setItem("recipes", JSON.stringify(filteredData));
+      setSavedRecipes(filteredData);
+      setStorageData(filteredData);
     }
     // otherwise  save it
     else {
       setSavedRecipes((prev) => [...prev, recipeObj]);
-      localStorage.setItem(
-        "recipes",
-        JSON.stringify([...savedRecipes, recipeObj]),
-      );
+      setStorageData([...savedRecipes, recipeObj]);
     }
   }
 
