@@ -81,8 +81,8 @@ function RecipeDetail() {
 
   return (
     <IconContext.Provider value={{ className: "text-main" }}>
-      <article className="grid gap-10">
-        <h1 className="mb-4 text-4xl font-bold">{meal.strMeal}</h1>
+      <article className="grid gap-10 dark:text-main-50">
+        <h1 className="mb-4 text-4xl font-bold ">{meal.strMeal}</h1>
         <div>
           <ImageFallback
             className="size-60 object-cover"

@@ -19,33 +19,35 @@ const ROLES = {
 function App() {
   return (
     <>
-      <Routes>
-        {/* public routes */}
-        <Route path="register" element={<SignUp />} />
-        <Route path="login" element={<SignIn />} />
-        <Route path="unauthorized" element={<Unauthorized />} />
+      <div className="bg-white dark:bg-darkColor">
+        <Routes>
+          {/* public routes */}
+          <Route path="register" element={<SignUp />} />
+          <Route path="login" element={<SignIn />} />
+          <Route path="unauthorized" element={<Unauthorized />} />
 
-        {/* we want to protect these routes */}
+          {/* we want to protect these routes */}
 
-        <Route element={<PersistLogin />}>
-          <Route
-            element={<RequireAuth allowedRoles={[ROLES.Admin, ROLES.User]} />}
-          >
-            <Route path="/" element={<RootLayout />}>
-              <Route index element={<Home />} />
-              <Route path="category/:name" element={<Category />} />
-              <Route path="category/:cat/:id" element={<RecipeDetail />} />
+          <Route element={<PersistLogin />}>
+            <Route
+              element={<RequireAuth allowedRoles={[ROLES.Admin, ROLES.User]} />}
+            >
+              <Route path="/" element={<RootLayout />}>
+                <Route index element={<Home />} />
+                <Route path="category/:name" element={<Category />} />
+                <Route path="category/:cat/:id" element={<RecipeDetail />} />
+              </Route>
+            </Route>
+
+            <Route element={<RequireAuth allowedRoles={[ROLES.Admin]} />}>
+              <Route path="backoffice" element={<BackOffice />} />
             </Route>
           </Route>
 
-          <Route element={<RequireAuth allowedRoles={[ROLES.Admin]} />}>
-            <Route path="backoffice" element={<BackOffice />} />
-          </Route>
-        </Route>
-
-        {/* catch all */}
-        <Route path="*" element={<NotFound />} />
-      </Routes>
+          {/* catch all */}
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </div>
     </>
   );
 }

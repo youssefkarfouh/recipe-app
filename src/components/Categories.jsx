@@ -28,15 +28,17 @@ function Categories() {
   const listCategories = response.categories?.map((cat) => (
     <div
       key={cat.idCategory}
-      className={`cursor-pointer text-center font-bold hover:text-main`}
+      className={`cursor-pointer text-center font-bold `}
       onClick={() => handClick(cat.strCategory)}
     >
       <ImageFallback
         src={cat.strCategoryThumb}
         alt={cat.strCategory}
-        className="mx-auto block size-40 rounded-full object-cover shadow-[0_5px_19px_-10px_#0000006e]"
+        className="mx-auto block size-40 rounded-full object-cover shadow-[0_5px_19px_-10px_#0000006e] dark:bg-white"
       />
-      <span className="mt-4 block text-center">{cat.strCategory}</span>
+      <span className="text-darkColor mt-4 block text-center hover:text-main  dark:text-main-50 dark:hover:text-main">
+        {cat.strCategory}
+      </span>
     </div>
   ));
 

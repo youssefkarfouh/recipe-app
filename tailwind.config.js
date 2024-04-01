@@ -4,9 +4,6 @@ export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   darkMode: "class",
   theme: {
-
-
-
     extend: {
       container: {
         padding: "2rem",
@@ -27,7 +24,7 @@ export default {
           900: "#7f1d1d",
           950: "#450a0a",
         },
-        dark: "#162128"
+        darkColor: "#162128"
       },
     },
     plugins: [],

@@ -43,9 +43,9 @@ function RecipeCard({ recipe }) {
           />
         </Link>
       </div>
-      <div className="flex items-center justify-between px-4 py-6">
+      <div className="flex items-center justify-between px-4 py-6 dark:bg-main-50">
         <h5 className="max-w-56 overflow-hidden text-ellipsis whitespace-nowrap text-base">
-          {recipe.strMeal}{" "}
+          {recipe.strMeal}
         </h5>
         <button
           className={`cursor-pointer border-0 bg-transparent p-0 text-lg  transition-all`}

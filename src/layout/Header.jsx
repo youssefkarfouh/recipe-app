@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from "react";
-import logo from "../assets/images/logo.png";
+
 import {
   IoHeartOutline,
   IoLogOutOutline,
   IoPersonOutline,
-  IoLaptopOutline,
-  IoPhonePortraitOutline,
-  IoTabletPortraitOutline,
   IoMoonOutline,
   IoSunnyOutline,
 } from "react-icons/io5";
@@ -21,13 +18,12 @@ import useAuth from "../hooks/useAuth";
 import DynamicInput from "../components/DynamicInput";
 import useDebounce from "../hooks/useDebounce";
 import useAxios from "../hooks/useAxios";
-import useResize from "../hooks/useResize";
 import useModeToglle from "../hooks/useModeToglle";
+import Logo from "../components/svg/Logo";
 
 function Header() {
   const { savedRecipes, setIsOpened } = useAppContext();
   const [response, error, loading, axiosFetch] = useAxios();
-  // const windowSize = useResize();
   const [theme, setTheme] = useModeToglle();
 
   const { auth } = useAuth();
@@ -119,13 +115,17 @@ function Header() {
   }
 
   return (
-    <IconContext.Provider value={{ size: "25px", className: "cursor-pointer" }}>
-      <header className="fixed top-0 z-10 w-full bg-white shadow-sm">
-        <div className="px©-2 container md:px-4">
-          <div className="flex flex-wrap items-center justify-center gap-4 py-4 md:justify-between">
-            <div className="max-w-48">
+    <IconContext.Provider
+      value={{
+        className: "cursor-pointer text-darkColor text-xl dark:text-white",
+      }}
+    >
+      <header className="dark:bg-darkColor fixed top-0 z-10 w-full bg-white shadow-sm">
+        <div className="container px-2 md:px-4">
+          <div className="flex flex-wrap items-center justify-center gap-4 py-2 md:justify-between">
+            <div>
               <Link to="/" className="block">
-                <img src={logo} alt="logo" />
+                <Logo color={theme === "dark" ? "white" : "black"} />
               </Link>
             </div>
             <div className="relative order-2 basis-[300px] md:order-1">
@@ -147,7 +147,7 @@ function Header() {
                 {mappedData}
               </ul>
             </div>
-            <div className="order-1   flex gap-8  md:order-2">
+            <div className="order-1 flex items-center gap-6 md:order-2">
               <div className="relative">
                 <IoHeartOutline onClick={() => setIsOpened(true)} />
                 <span className="absolute -right-2 -top-2 inline-block size-4 rounded-full bg-main-600 text-center text-xs  text-main-50">
@@ -159,13 +159,17 @@ function Header() {
                   <IoPersonOutline />
                 </Dropdown>
               </div>
-              <div className="flex gap-2">
-                {theme === "light" && (
-                  <IoMoonOutline onClick={() => setTheme("dark")} />
-                )}
-                {theme === "dark" && (
-                  <IoSunnyOutline onClick={() => setTheme("light")} />
-                )}
+              <div className="flex">
+                <span
+                  className={`rounded-full p-1 shadow-[inset_0px_0px_5px_0px_#514f4f59]`}
+                >
+                  {theme === "light" && (
+                    <IoMoonOutline onClick={() => setTheme("dark")} />
+                  )}
+                  {theme === "dark" && (
+                    <IoSunnyOutline onClick={() => setTheme("light")} />
+                  )}
+                </span>
               </div>
             </div>
           </div>
@@ -176,13 +180,3 @@ function Header() {
 }
 
 export default Header;
-
-{
-  /* {windowSize < 576 ? (
-                  <IoPhonePortraitOutline />
-                ) : windowSize < 992 ? (
-                  <IoTabletPortraitOutline />
-                ) : (
-                  <IoLaptopOutline />
-                )} */
-}

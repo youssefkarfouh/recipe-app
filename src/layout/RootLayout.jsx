@@ -6,7 +6,7 @@ function RootLayout() {
   return (
     <div className="App">
       <Header />
-      <main className="pb-10 pt-28 dark:bg-black">
+      <main className="pb-10 pt-28">
         <Aside />
         <div className="container">
           <Outlet />

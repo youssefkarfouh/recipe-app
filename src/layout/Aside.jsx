@@ -16,12 +16,11 @@ const Aside = () => {
   const { cat } = useParams();
 
   useEffect(() => {
-    // set recipes ony if data exist and not empty array 
+    // set recipes ony if data exist and not empty array
 
-    if(storedData.length !== 0){
+    if (storedData.length !== 0) {
       setSavedRecipes(storedData);
     }
-
   }, []);
 
   const ref = useClickOutside(() => {
@@ -47,7 +46,7 @@ const Aside = () => {
 
         <IoRemoveCircleSharp
           onClick={() => removeMeal(ele.idMeal)}
-          className="absolute right-0 top-0 h-5 w-5 "
+          className="absolute right-0 top-0 h-5 w-5 text-darkColor"
           title="Remove meal from saved recipes"
         />
       </li>
@@ -75,6 +74,11 @@ const Aside = () => {
         <ul className="my-4 flex flex-wrap justify-center gap-4">
           {savedData}
         </ul>
+        {savedRecipes.length > 0 && (
+          <button className="bg-darkColor mt-5 block w-full rounded-md px-10 py-2 text-main-50">
+            Clear
+          </button>
+        )}
       </aside>
     </IconContext.Provider>
   );
