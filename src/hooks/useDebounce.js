@@ -9,8 +9,6 @@ const useDebounce = (value, delay = 500) => {
         }, delay)
 
         return () => {
-
-            console.log("clear time out called ")
             clearTimeout(id)
         }
     }, [value, delay])

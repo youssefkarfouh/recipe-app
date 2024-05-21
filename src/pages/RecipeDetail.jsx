@@ -1,43 +1,30 @@
-import React, { useEffect, useState } from "react";
-import axios from "../api/axios";
+import React from "react";
 import { useParams } from "react-router-dom";
 import { IoCheckbox, IoSquare } from "react-icons/io5";
 import { IconContext } from "react-icons";
 import ImageFallback from "../components/ImageFallback";
-import useAxios from "../hooks/useAxios";
+import { recipeById } from "../api/endpoints";
+import { useQuery } from "@tanstack/react-query";
 
 function RecipeDetail() {
   const { id } = useParams();
-  const [response, error, loading, axiosFetch] = useAxios();
 
-  console.log("loading", loading);
+  const { data, isPending, isError, error } = useQuery({
+    queryKey: ["recipeById" , id],
+    queryFn: () => recipeById(id),
+  });
 
-  useEffect(() => {
-    axiosFetch({
-      axiosInstance: axios,
-      method: "get",
-      url: `/lookup.php`,
-      requestConfig: {
-        params: {
-          i: id,
-        },
-      },
-    });
-  }, [id]);
 
-  if (loading) {
+  if (isPending) {
     return <div className="">Loading ...</div>;
   }
 
-  if (error) {
+  if (isError) {
     return <div className="">Error: {error.message}</div>;
   }
 
-  if (!response || !response.meals || response.meals.length === 0) {
-    return <div>No data available</div>;
-  }
 
-  const meal = response.meals[0];
+  const meal = data?.meals[0];
 
   const listTags = meal.strTags?.split(",").map((tag, index) => {
     return (

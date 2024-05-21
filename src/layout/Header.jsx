@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 import {
   IoHeartOutline,
@@ -8,7 +8,6 @@ import {
   IoSunnyOutline,
 } from "react-icons/io5";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "../api/axios";
 import useClickOutside from "../hooks/useClickOutside";
 import { useAppContext } from "../context/SharedData";
 import useLogout from "../hooks/useLogout";
@@ -17,23 +16,29 @@ import { Dropdown } from "antd";
 import useAuth from "../hooks/useAuth";
 import DynamicInput from "../components/DynamicInput";
 import useDebounce from "../hooks/useDebounce";
-import useAxios from "../hooks/useAxios";
 import useModeToglle from "../hooks/useModeToglle";
 import Logo from "../components/svg/Logo";
+import { useQuery } from "@tanstack/react-query";
+import { searchRecipe } from "../api/endpoints";
 
 function Header() {
+  const [formData, setFormData] = useState("");
+  const [show, setShow] = useState(false);
+
+  const debouncedSearchValue = useDebounce(formData, 1000);
+
+  const { data, error, isLoading } = useQuery({
+    queryKey: ["searchResults", debouncedSearchValue],
+    queryFn: () => searchRecipe(debouncedSearchValue),
+    enabled: Boolean(debouncedSearchValue),
+  });
+
   const { savedRecipes, setIsOpened } = useAppContext();
-  const [response, error, loading, axiosFetch] = useAxios();
   const [theme, setTheme] = useModeToglle();
 
   const { auth } = useAuth();
   const logout = useLogout();
   const navigate = useNavigate();
-
-  const [formData, setFormData] = useState(null);
-  const [show, setShow] = useState(false);
-
-  const debouncedSearchValue = useDebounce(formData, 1000);
 
   // menu items
   const items = [
@@ -53,20 +58,14 @@ function Header() {
     setShow(false);
   });
 
-  useEffect(() => {
-    // check if debouncedSearchValue not falsy value
-    Boolean(debouncedSearchValue) && getResults(debouncedSearchValue);
-  }, [debouncedSearchValue]);
-
   function handleClick(meal) {
     navigate(`/category/${meal.strCategory}/${meal.idMeal}`);
     setShow(false);
   }
 
   let mappedData = [
-    response.meals?.map((ele, index) => {
+    data?.meals?.map((ele, index) => {
       return (
-        // dangerouslySetInnerHTML={highlite(ele.strMeal, formData)}
         <>
           <li
             key={index}
@@ -91,24 +90,7 @@ function Header() {
       __html: res,
     };
   }
-  function handlChange(e) {
-    setFormData(e.target.value);
-  }
 
-  function getResults(searchTerm) {
-    axiosFetch({
-      axiosInstance: axios,
-      method: "get",
-      url: `/search.php`,
-      requestConfig: {
-        params: {
-          s: searchTerm,
-        },
-      },
-    });
-
-    setShow(true);
-  }
   async function handleLogout() {
     await logout();
     navigate("/login", { replace: true });
@@ -120,7 +102,7 @@ function Header() {
         className: "cursor-pointer text-darkColor text-xl dark:text-white",
       }}
     >
-      <header className="dark:bg-darkColor fixed top-0 z-10 w-full bg-white shadow-sm">
+      <header className="fixed top-0 z-10 w-full bg-white shadow-sm dark:bg-darkColor">
         <div className="container px-2 md:px-4">
           <div className="flex flex-wrap items-center justify-center gap-4 py-2 md:justify-between">
             <div>
@@ -135,7 +117,10 @@ function Header() {
                   id="searchInput"
                   name="search"
                   placeholder="search..."
-                  change={handlChange}
+                  change={(e) => {
+                    setShow(true)
+                    setFormData(e.target.value);
+                  }}
                   inputValue={formData}
                   isRequired={false}
                 />

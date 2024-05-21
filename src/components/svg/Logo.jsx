@@ -6,8 +6,8 @@ function Logo({color}) {
       <g
         fill="none"
         stroke={color}
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       >
         <path d="m24 24.4682h-18.5c0 9.2155 11.597 17.1393 11.597 17.1393h6.903" />
         <path d="m10.8843 26.5736c0 6.7924 7.6278 11.8041 7.6278 11.8041" />

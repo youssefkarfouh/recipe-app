@@ -1,11 +1,11 @@
 import { useState, useEffect, useRef } from "react";
 import useAuth from "../hooks/useAuth";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import useAxiosPrivate from "../hooks/usePrivateAxios";
+import useaxiosBackend from "../hooks/usePrivateAxios";
 import DynamicInput from "../components/DynamicInput";
 
 function SignIn() {
-  const axiosPrivate = useAxiosPrivate();
+  const axiosBackend = useaxiosBackend();
   const inputRef = useRef(null);
 
   const [err, setErrMsg] = useState("");
@@ -33,7 +33,7 @@ function SignIn() {
     e.preventDefault();
 
     try {
-      const response = await axiosPrivate.post(
+      const response = await axiosBackend.post(
         "/auth",
         JSON.stringify({ user, pwd }),
         {
