@@ -35,14 +35,10 @@ function SignIn() {
     try {
       const response = await axiosBackend.post(
         "/auth",
-        JSON.stringify({ user, pwd }),
-        {
-          headers: { "Content-Type": "application/json" },
-          withCredentials: true,
-        },
+        JSON.stringify({ user, pwd })
       );
 
-      const { accessToken, roles } = response?.data;
+      const { accessToken, roles } = response.data;
 
       setAuth({ user, pwd, roles, accessToken });
       setUser("");
@@ -72,7 +68,7 @@ function SignIn() {
 
             {err !== "" && (
               <div
-                class="mb-4 rounded-lg bg-red-50 p-4 text-sm text-red-800 "
+                className="mb-4 rounded-lg bg-red-50 p-4 text-sm text-red-800 "
                 role="alert"
               >
                 {err}

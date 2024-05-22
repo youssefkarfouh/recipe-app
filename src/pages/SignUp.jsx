@@ -1,9 +1,11 @@
 import { useEffect, useRef, useState } from "react";
-import axios from "../api/axios";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import DynamicInput from "../components/DynamicInput";
+import useaxiosBackend from "../hooks/usePrivateAxios";
 
 const SignUp = () => {
+  
+  const axiosBackend = useaxiosBackend();
   const [err, setErrMsg] = useState("");
   const [user, setUser] = useState("");
   const [pwd, setPwd] = useState("");
@@ -26,25 +28,19 @@ const SignUp = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    console.log("{ user, pwd }", user, pwd);
     try {
-      const response = await axios.post(
+       await axiosBackend.post(
         "/register",
-        JSON.stringify({ user, pwd }),
-        {
-          headers: { "Content-Type": "application/json" },
-          withCredentials: true,
-        },
+        JSON.stringify({ user, pwd })
       );
 
       setUser("");
       setPwd("");
       setConfirmPwd("");
 
-      alert("success");
-    } catch (err) {
-      console.log("err", err);
 
+    } catch (err) {
+     
       if (!err?.response) {
         setErrMsg("No Server Response");
       } else if (err.response?.status === 409) {
@@ -67,10 +63,10 @@ const SignUp = () => {
 
               {err !== "" && (
                 <div
-                  class="mb-4 rounded-lg bg-red-50 p-4 text-sm text-red-800 "
+                  className="mb-4 rounded-lg bg-red-50 p-4 text-sm text-red-800 "
                   role="alert"
                 >
-                  <span class="font-medium">Danger alert!</span> {err}
+                  <span className="font-medium">Danger alert!</span> {err}
                 </div>
               )}
 
