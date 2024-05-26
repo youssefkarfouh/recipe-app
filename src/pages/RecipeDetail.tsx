@@ -11,7 +11,7 @@ function RecipeDetail() {
 
   const { data, isPending, isError, error } = useQuery({
     queryKey: ["recipeById" , id],
-    queryFn: () => recipeById(id),
+    queryFn: () => recipeById(id as string),
   });
 
 
@@ -26,7 +26,7 @@ function RecipeDetail() {
 
   const meal = data?.meals[0];
 
-  const listTags = meal.strTags?.split(",").map((tag, index) => {
+  const listTags = meal.strTags?.split(",").map((tag:string, index:number) => {
     return (
       Boolean(tag) && (
         <span
@@ -41,7 +41,7 @@ function RecipeDetail() {
 
   const listInstructions = meal.strInstructions
     ?.split(".")
-    .map((instruct, index) => {
+    .map((instruct:string, index:number) => {
       return (
         instruct && (
           <li key={index} className="mb-2">
