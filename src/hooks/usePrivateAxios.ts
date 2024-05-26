@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import { axiosBackend } from "../api/axios";
 import { useEffect } from "react";
 import useRefreshToken from "./useRefreshToken";
