@@ -12,14 +12,17 @@ import useClickOutside from "../hooks/useClickOutside";
 import { useAppContext } from "../context/SharedData";
 import useLogout from "../hooks/useLogout";
 import { IconContext } from "react-icons";
-import { Dropdown } from "antd";
+import { Button, Dropdown, Form, FormProps, Input } from "antd";
 import useAuth from "../hooks/useAuth";
-import DynamicInput from "../components/DynamicInput";
 import useDebounce from "../hooks/useDebounce";
 import useModeToglle from "../hooks/useModeToglle";
 import Logo from "../components/svg/Logo";
 import { useQuery } from "@tanstack/react-query";
 import { searchRecipe } from "../api/endpoints";
+
+type FieldType = {
+  search?: string;
+}
 
 function Header() {
   const [formData, setFormData] = useState("");
@@ -48,7 +51,7 @@ function Header() {
     },
     {
       key: "2",
-      label: <Link onClick={handleLogout}>Logout</Link>,
+      label: <Button onClick={handleLogout}>Logout</Button>,
       icon: <IoLogOutOutline />,
       danger: true,
     },
@@ -79,7 +82,7 @@ function Header() {
   ];
 
   // highlite text in the search list
-  function highlite(sourceText, strHighlite) {
+  function highlite(sourceText: string, strHighlite: string) {
     let regex = new RegExp(strHighlite, "ig");
     let res = sourceText.replace(
       regex,
@@ -94,6 +97,10 @@ function Header() {
   async function handleLogout() {
     await logout();
     navigate("/login", { replace: true });
+  }
+
+  const onFinish: FormProps<FieldType>['onFinish'] = (values) => {
+    console.log('Success:', values);
   }
 
   return (
@@ -111,20 +118,19 @@ function Header() {
               </Link>
             </div>
             <div className="relative order-2 basis-[300px] md:order-1">
-              <form id="form">
-                <DynamicInput
-                  type="input"
-                  id="searchInput"
+              <Form
+                name="basic"
+                onFinish={onFinish}
+                autoComplete="off"
+                layout="vertical"
+              >
+                <Form.Item<FieldType>
                   name="search"
-                  placeholder="search..."
-                  change={(e) => {
-                    setShow(true)
-                    setFormData(e.target.value);
-                  }}
-                  inputValue={formData}
-                  isRequired={false}
-                />
-              </form>
+                >
+                  <Input placeholder="username" />
+                </Form.Item>
+
+              </Form>
               <ul
                 ref={ref}
                 className={`absolute left-0 max-h-80 w-full overflow-auto bg-main-50 p-0 transition-all duration-300 ${show ? "visible translate-y-0 opacity-100" : "invisible translate-y-1/4 opacity-0"}`}

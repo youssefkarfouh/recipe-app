@@ -1,8 +1,16 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { ReactNode, createContext, useContext, useState } from "react";
+import { I_SharedData } from "../interfaces/sharedData";
 
-const AppContext = createContext();
+const AppContext = createContext<I_SharedData>({
+  isOpened : false,
+  savedRecipes : [],
+  setSavedRecipes: () => {},
+  setIsOpened: () => {},
 
-export const SharedData = ({ children }) => {
+});
+
+
+export const SharedData = ({ children }:{ children: ReactNode }) => {
   const [savedRecipes, setSavedRecipes] = useState([]);
   const [isOpened, setIsOpened] = useState(false);
 

@@ -1,17 +1,17 @@
 import React, { Dispatch, ReactNode, SetStateAction, createContext, useState } from "react";
-import { AuthContextType, AuthProviderProps, AuthState } from "../interfaces/auth";
+import { I_AuthContextType, I_AuthState } from "../interfaces/authContext";
 
 
-const AuthContext = createContext<AuthContextType>({
-  auth: {roles:[], accessToken:'' , token:'' , user:''},
-  setAuth: (value: React.SetStateAction<AuthState>): void =>{},
+const AuthContext = createContext<I_AuthContextType>({
+  auth: { roles: [], accessToken: '', pwd: '', user: '' },
+  setAuth: (value: React.SetStateAction<I_AuthState>): void => { },
   persist: false,
-  setPersist:  (value: React.SetStateAction<boolean>): void =>{}
+  setPersist: (value: React.SetStateAction<boolean>): void => { }
 });
 
 
-export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-  const [auth, setAuth] = useState<AuthState>({roles:[], accessToken:'' , token:'' , user:''});
+export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+  const [auth, setAuth] = useState<I_AuthState>({ roles: [], accessToken: '', pwd: '', user: '' });
   const [persist, setPersist] = useState<boolean>(
     JSON.parse(localStorage.getItem("persist") as string) || false,
   );
@@ -25,21 +25,3 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
 export default AuthContext;
 
-
-
-
-// // Implement the AuthProvider component
-// export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-//   const [auth, setAuth] = useState<AuthState>({});
-//   const [persist, setPersist] = useState<boolean>(
-//     JSON.parse(localStorage.getItem("persist") || "false")
-//   );
-
-//   return (
-//     <AuthContext.Provider value={{ auth, setAuth, persist, setPersist }}>
-//       {children}
-//     </AuthContext.Provider>
-//   );
-// };
-
-// export default AuthContext;

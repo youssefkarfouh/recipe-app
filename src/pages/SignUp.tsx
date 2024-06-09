@@ -1,8 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import DynamicInput from "../components/DynamicInput";
-
-import { Button, Checkbox, Form, FormProps, Input } from "antd";
+import { Button, Checkbox, Form, FormProps, Input, InputRef } from "antd";
 import ButtonDynamic from "../components/ButtonDynamic";
 
 type FieldType = {
@@ -15,7 +13,7 @@ type FieldType = {
 const SignUp = () => {
 
   const [matchPwd, setMatchPwd] = useState(false);
-  const inputRef = useRef<HTMLInputElement>(null);
+  const inputRef = useRef<InputRef>(null);
 
 
 
@@ -41,42 +39,6 @@ const SignUp = () => {
 
               <Form
                 name="basic"
-
-                onFinish={onFinish}
-                autoComplete="off"
-              >
-                <Form.Item<FieldType>
-                  label="Username"
-                  name="username"
-                  rules={[{ required: true, message: 'Please input your username!' }]}
-                >
-                  <DynamicInput type="text" placeholder="username" />
-                </Form.Item>
-
-                <Form.Item<FieldType>
-                  label="Password"
-                  name="password"
-                  rules={[{ required: true, message: 'Please input your password!' }]}
-                >
-                  <DynamicInput type="password" placeholder="password" />
-                </Form.Item>
-                <Form.Item<FieldType>
-                  label="Confirm Password"
-                  name="confirmPsd"
-                  rules={[{ required: true, message: 'Please input your password!' }]}
-                >
-                  <DynamicInput type="password" placeholder="password" />
-                </Form.Item>
-
-                <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-                  <Button type="primary" htmlType="submit">
-                    Submit
-                  </Button>
-                </Form.Item>
-              </Form>
-
-              {/* <Form
-                name="basic"
                 onFinish={onFinish}
                 autoComplete="off"
                 layout="vertical"
@@ -86,10 +48,7 @@ const SignUp = () => {
                   name="username"
                   rules={[{ required: true, message: 'Please input your username!' }]}
                 >
-                  <DynamicInput
-                    type="text"
-                    placeholder="username"
-                  />
+                  <Input ref={inputRef} type="text" placeholder="username" />
                 </Form.Item>
 
                 <Form.Item<FieldType>
@@ -97,23 +56,37 @@ const SignUp = () => {
                   name="password"
                   rules={[{ required: true, message: 'Please input your password!' }]}
                 >
-                  <DynamicInput placeholder="password" type="password" />
+                  <Input.Password type="password" placeholder="password" />
                 </Form.Item>
-                <Form.Item<FieldType>
+                <Form.Item
+                  name="s"
                   label="Confirm Password"
-                  name="ConfirmPsd"
-                  rules={[{ required: true, message: 'Please input your password!' }]}
+                  dependencies={['password']}
+                  hasFeedback
+                  rules={[
+                    {
+                      required: true,
+                      message: 'Please confirm your password!',
+                    },
+                    ({ getFieldValue }) => ({
+                      validator(_, value) {
+                        if (!value || getFieldValue('password') === value) {
+                          return Promise.resolve();
+                        }
+                        return Promise.reject(new Error('The new password that you entered do not match!'));
+                      },
+                    }),
+                  ]}
                 >
-                  <DynamicInput placeholder="password" type="password" />
+                  <Input.Password />
                 </Form.Item>
 
-                {/* <ButtonDynamic btnType="submit">Register </ButtonDynamic> */}
-
-              {/* <Button type="primary" htmlType="submit" className='bg-main hover:bg-black block w-full rounded-md  px-4 py-2 text-white transition-all'>
-                rwgister
-              </Button> */}
-
-              {/* </Form>  */}
+                <Form.Item>
+                  <Button type="primary" htmlType="submit">
+                    Submit
+                  </Button>
+                </Form.Item>
+              </Form>
 
 
               <p className="mt-5 text-sm">

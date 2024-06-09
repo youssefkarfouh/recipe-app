@@ -1,24 +1,30 @@
-import { useState, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import useAuth from "../hooks/useAuth";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import useaxiosBackend from "../hooks/usePrivateAxios";
-import DynamicInput from "../components/DynamicInput";
-import { Checkbox, Form, FormProps } from "antd";
+
+import {Checkbox, Form, FormProps, Input, InputRef } from "antd";
 import ButtonDynamic from "../components/ButtonDynamic";
+import { CheckboxChangeEvent } from "antd/es/checkbox";
+import { useMutation } from "@tanstack/react-query";
+import { QUERIES } from "../data/QueryKeys";
+import { login } from "../services/auth";
+import { I_AuthState } from "../interfaces/authContext";
 
 type FieldType = {
-  username?: string;
-  password?: string;
+  user: string;
+  pwd: string;
   remember?: string;
 };
 
 function SignIn() {
-  const axiosBackend = useaxiosBackend();
-  const inputRef = useRef<HTMLInputElement>(null);
 
-  const [err, setErrMsg] = useState("");
-  const [user, setUser] = useState("");
-  const [pwd, setPwd] = useState("");
+  const inputRef = useRef<InputRef>(null);
+
+  const { data, isPending, isError, error, mutate: authenticate } = useMutation({
+    mutationKey: [QUERIES.USER_INFO],
+    mutationFn: login
+  })
+
 
   const { setAuth, persist, setPersist } = useAuth();
 
@@ -26,9 +32,6 @@ function SignIn() {
   const location = useLocation();
   const from = location.state ? location.state.from.pathname : "/";
 
-  useEffect(() => {
-    setErrMsg("");
-  }, [user, pwd]);
 
   useEffect(() => {
     localStorage.setItem("persist", persist.toString());
@@ -41,34 +44,27 @@ function SignIn() {
   const onFinish: FormProps<FieldType>['onFinish'] = (values) => {
     console.log('Success:', values);
 
-    // try {
-    //   const response = await axiosBackend.post(
-    //     "/auth",
-    //     JSON.stringify({ user, pwd }),
-    //     {
-    //       headers: { "Content-Type": "application/json" },
-    //       withCredentials: true,
-    //     },
-    //   );
+    const { user, pwd } = values
 
-    //   const { accessToken, roles } = response?.data;
+    authenticate({ user, pwd },
+      {
+        onSuccess: ({ roles, accessToken }:I_AuthState) => {
 
-    //   setAuth({ user, pwd, roles, accessToken });
-    //   setUser("");
-    //   setPwd("");
+          setAuth({ user, pwd, roles, accessToken });
+          navigate(from , {replace:true})
+        }
+      })
 
-    //   navigate(from, { replace: true });
-    // } catch (err) {
-    //   if (!err?.response) {
-    //     setErrMsg("No Server Response");
-    //   } else if (err.response?.status === 400) {
-    //     setErrMsg("Missing Username or Password");
-    //   } else if (err.response?.status === 401) {
-    //     setErrMsg("Unauthorized");
-    //   } else {
-    //     setErrMsg("Login Failed");
-    //   }
+    // if (!err?.response) {
+    //   setErrMsg("No Server Response");
+    // } else if (err.response?.status === 400) {
+    //   setErrMsg("Missing Username or Password");
+    // } else if (err.response?.status === 401) {
+    //   setErrMsg("Unauthorized");
+    // } else {
+    //   setErrMsg("Login Failed");
     // }
+
   };
 
   return (
@@ -78,53 +74,49 @@ function SignIn() {
           <div className="w-full p-4 lg:w-2/3 xl:w-1/3">
             <h3 className="mb-10 text-center text-3xl font-medium">Sign in</h3>
 
-            {err !== "" && (
+            {isError && (
               <div
                 className="mb-4 rounded-lg bg-red-50 p-4 text-sm text-red-800 "
                 role="alert"
               >
-                {err}
+                {error.message}
               </div>
             )}
 
             <Form
               name="basic"
-              initialValues={{ remember: true }}
               onFinish={onFinish}
               autoComplete="off"
               layout="vertical"
+              initialValues={{ remember: false }}
             >
               <Form.Item<FieldType>
                 label="Username"
-                name="username"
+                name="user"
                 rules={[{ required: true, message: 'Please input your username!' }]}
               >
-                <DynamicInput
-                  type="text"
-                  placeholder="username"
-                />
+                <Input ref={inputRef} type="text" placeholder="username" />
               </Form.Item>
-
               <Form.Item<FieldType>
                 label="Password"
-                name="password"
+                name="pwd"
                 rules={[{ required: true, message: 'Please input your password!' }]}
               >
-                <DynamicInput placeholder="password" type="password" />
+                <Input type="password" placeholder="password" />
               </Form.Item>
 
               <Form.Item<FieldType>
                 name="remember"
-
               >
-                <Checkbox>Remember me</Checkbox>
+                <Checkbox onChange={(e: CheckboxChangeEvent) => setPersist(e.target.checked)} >Remember me</Checkbox>
               </Form.Item>
 
               <Form.Item>
-                <ButtonDynamic btnType="submit">Sign in </ButtonDynamic>
+                <ButtonDynamic loading={isPending} btnType="submit">
+                  Submit
+                </ButtonDynamic>
               </Form.Item>
             </Form>
-
             <p className="mt-5 text-sm">
               You don`t have an account
               <Link className="ml-1 text-blue-500" to={"/register"}>
